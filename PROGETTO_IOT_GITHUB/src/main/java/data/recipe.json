@@ -1,18 +1,24 @@
 {
-"nome_ricetta" : "Ricetta Test", 
-"fase_1" : "F1",
-"temperatura_1" : 20,
-"tempo_1" : 30,
-"fase_2" : "F2",
-"temperatura_2" : 25,
-"tempo_2" : 60,
-"fase_3" : "F3",
-"temperatura_3" : 30,
-"tempo_3" : 90,
-"fase_4" : "F4",
-"temperatura_4" : 35,
-"tempo_4" : 120,
-"fase_5" : "F5",
-"temperatura_5" : 40,
-"tempo_5" : 150
+  "nome_ricetta": "Ricetta Test",
+  "fasi": [
+    "FASE 1",
+    "FASE 2",
+    "FASE 3",
+    "FASE 4",
+    "FASE 5"
+  ],
+  "temperature": [
+    20,
+    25,
+    30,
+    35,
+    40
+  ],
+  "tempi": [
+    60,
+    90,
+    120,
+    150,
+    180
+  ]
 }

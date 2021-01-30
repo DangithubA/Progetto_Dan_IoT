@@ -1,6 +1,7 @@
 package resource;
 
 import java.util.Random;
+import model.RecipeDescriptor;
 import java.util.UUID;
 
 /**
@@ -10,29 +11,23 @@ import java.util.UUID;
  */
 public class TemperatureSensorResource extends SmartObjectResource<Double> {
 
-    private Random random;
+    private RecipeDescriptor recipe;
 
-    private final double MAX_TEMPERATURE_VALUE = 30.0;
-
-    private final double MIN_TEMPERATURE_VALUE = 20.0;
-
-    private final double MAX_OFFSET = +3.0;
-
-    private final double MIN_OFFSET = -3.0;
+    private double startTemperature;
 
     public static final String RESOURCE_UNIT = "C";
 
     public static final String RESOURCE_TYPE = "iot:sensor:temperature";
 
-    public TemperatureSensorResource(){
+    public TemperatureSensorResource(RecipeDescriptor recipe){
         super(UUID.randomUUID().toString(), TemperatureSensorResource.RESOURCE_UNIT, TemperatureSensorResource.RESOURCE_TYPE);
-        this.random = new Random(System.currentTimeMillis());
-        this.value = MIN_TEMPERATURE_VALUE + this.random.nextDouble() * (MAX_TEMPERATURE_VALUE - MIN_TEMPERATURE_VALUE);
+        this.recipe = recipe;
+        this.startTemperature = this.recipe.getTemperatures().get(0)-5.0;
     }
 
     @Override
     public void refreshValue() {
-        this.value = this.value + (MIN_OFFSET + new Random().nextDouble() * (MAX_OFFSET - MIN_OFFSET));
+
     }
 
 }

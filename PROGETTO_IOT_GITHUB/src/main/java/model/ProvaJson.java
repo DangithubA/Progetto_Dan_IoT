@@ -16,6 +16,8 @@ public class ProvaJson {
             RecipeDescriptor rd = om.readValue(new File("src/main/java/data/recipe.json"), RecipeDescriptor.class);
 
             System.out.println(rd.toString());
+            System.out.println(rd.getTemperatures());
+            System.out.println(rd.getTemperatures().get(2));
 
         } catch (IOException e) {
             e.printStackTrace();
