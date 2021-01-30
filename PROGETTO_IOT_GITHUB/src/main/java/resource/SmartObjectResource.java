@@ -14,6 +14,8 @@ public abstract class SmartObjectResource<T> {
 
     private String type;
 
+    private Double increase;  // AGGIUNTO DA DAN
+
     protected T value;
 
     public SmartObjectResource() {
@@ -53,15 +55,24 @@ public abstract class SmartObjectResource<T> {
         return this.value;
     }
 
+    public Double getIncrease() {
+        return increase;
+    } // AGGIUNTO DA DAN
+
+    public void setIncrease(Double increase) {
+        this.increase = increase;
+    } // AGGIUNTO DA DAN
+
     /**
      * Method used to refresh emulated resource internal value
      * Use this.value to update the internal field (type T)
      */
-    public abstract void refreshValue();
+
+    public abstract T refreshValue(T increase);  // MODIFICATO DA DAN INCREASE E RETURN T
 
     public void setValue(T value) {
         this.value = value;
-    }
+    }  // DOMANDA SI PUO USARE PER SETTARE IL VALORE INIZIALE DELLA SONDA ?
 
     @Override
     public String toString() {

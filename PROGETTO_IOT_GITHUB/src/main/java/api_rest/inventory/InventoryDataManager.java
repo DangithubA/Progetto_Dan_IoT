@@ -18,9 +18,8 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
-public class InventoryDataManager implements IInventoryCollectorPack{
-
-    final protected Logger logger = LoggerFactory.getLogger(DefaultInventoryDataCollector.class);
+    public class InventoryDataManager implements IInventoryCollectorPack{
+        final protected Logger logger = LoggerFactory.getLogger(DefaultInventoryDataCollector.class);
 
 
     @Override

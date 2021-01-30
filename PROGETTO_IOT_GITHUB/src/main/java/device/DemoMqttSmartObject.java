@@ -85,7 +85,7 @@ public class DemoMqttSmartObject implements IMqttSmartObjectDevice {
                                 if(mapResourceEntry != null){
 
                                     //Refresh Smart Object value
-                                    mapResourceEntry.getValue().refreshValue();
+                                    //mapResourceEntry.getValue().refreshValue(increase);  SOSPESO DA DAN IMPLEMENTARE REFRESH HO SCRITTO (INCREASE)
 
                                     publishTelemetryData(String.format("%s/%s", baseTopic, mapResourceEntry.getKey()),
                                             new TelemetryMessage(System.currentTimeMillis(), mapResourceEntry.getValue().getType(), mapResourceEntry.getValue()));

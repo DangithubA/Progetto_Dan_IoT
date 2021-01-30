@@ -26,9 +26,15 @@ public class TemperatureSensorResource extends SmartObjectResource<Double> {
         this.startTemperature = this.recipe.getTemperatures().get(0)-5.0;
     }
 
-    @Override
-    public void refreshValue() {
+    /**
+     * Method used to refresh emulated resource internal value
+     * Use this.value to update the internal field (type T)
+     */
 
-    }
+    @Override
+    public Double refreshValue(Double increase) {
+        this.value = this.value + increase;
+        return this.value;
+    }  // MODIFICATO DA DAN AGGIUNTO INCREASE + RETURN VALUE
 
 }
