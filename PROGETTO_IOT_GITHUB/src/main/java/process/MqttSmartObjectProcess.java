@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import device.DemoMqttSmartObject;
 import exception.MqttSmartObjectConfigurationException;
+import model.RecipeDescriptor;
 import resource.SmartObjectResource;
 import resource.TemperatureSensorResource;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
@@ -19,11 +20,14 @@ import java.util.HashMap;
 import java.util.UUID;
 
 /**
- * Author: Marco Picone, Ph.D. (picone.m@gmail.com)
- * Date: 24/04/2020
- * Project: MQTT BOT Smart Object (mqtt-bot-smartobject)
+ * @author: Daniele Barbieri Powered by Marco Picone
+ * @date: 30/01/2021
+ * @project: Progetto_Dan_IoT
  */
+
 public class MqttSmartObjectProcess {
+
+    private static RecipeDescriptor recipe;
 
     private static final Logger logger = LoggerFactory.getLogger(MqttSmartObjectProcess.class);
 
@@ -77,7 +81,7 @@ public class MqttSmartObjectProcess {
                     String.format("iot/device/%s", deviceId),
                     new HashMap<String, SmartObjectResource<?>>(){
                         {
-                            put("temperature", new TemperatureSensorResource());
+                            put("temperature", new TemperatureSensorResource(recipe));
 
                         }
                     });

@@ -3,10 +3,11 @@ package message;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * @author Marco Picone, Ph.D. - picone.m@gmail.com
- * @project mqtt-demo-fleet-monitoring
- * @created 04/11/2020 - 15:56
+ * @author: Daniele Barbieri Powered by Marco Picone
+ * @date: 30/01/2021
+ * @project: Progetto_Dan_IoT
  */
+
 public class TelemetryMessage<T> {
 
     @JsonProperty("timestamp")

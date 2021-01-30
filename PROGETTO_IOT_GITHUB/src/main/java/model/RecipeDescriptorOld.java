@@ -2,6 +2,13 @@ package model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * @author: Daniele Barbieri Powered by Marco Picone
+ * @date: 30/01/2021
+ * @project: Progetto_Dan_IoT
+ */
+
+
 public class RecipeDescriptorOld {
 
     @JsonProperty("nome_ricetta")

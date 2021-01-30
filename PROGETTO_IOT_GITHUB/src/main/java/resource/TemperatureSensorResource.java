@@ -5,10 +5,11 @@ import model.RecipeDescriptor;
 import java.util.UUID;
 
 /**
- * @author Marco Picone, Ph.D. - picone.m@gmail.com
- * @project mqtt-demo-smartobject
- * @created 12/10/2020 - 19:28
+ * @author: Daniele Barbieri Powered by Marco Picone
+ * @date: 30/01/2021
+ * @project: Progetto_Dan_IoT
  */
+
 public class TemperatureSensorResource extends SmartObjectResource<Double> {
 
     private RecipeDescriptor recipe;

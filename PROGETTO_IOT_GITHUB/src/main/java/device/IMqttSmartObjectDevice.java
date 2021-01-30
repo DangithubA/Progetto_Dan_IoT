@@ -7,10 +7,11 @@ import org.eclipse.paho.client.mqttv3.IMqttClient;
 import java.util.Map;
 
 /**
- * Author: Marco Picone, Ph.D. (picone.m@gmail.com)
- * Date: 24/04/2020
- * Project: MQTT BOT Smart Object (mqtt-bot-smartobject)
+ * @author: Daniele Barbieri Powered by Marco Picone
+ * @date: 30/01/2021
+ * @project: Progetto_Dan_IoT
  */
+
 public interface IMqttSmartObjectDevice {
 
     public void init(MqttSmartObjectConfiguration smartObjectConfiguration,

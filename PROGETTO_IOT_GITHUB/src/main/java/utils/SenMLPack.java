@@ -6,9 +6,12 @@ import java.util.ArrayList;
  *
  * List of SenMLRecord
  *
- * @author Marco Picone, Ph.D. - picone.m@gmail.com
- * @project coap-demo-smartobject
- * @created 27/10/2020 - 22:27
+ * @author: Daniele Barbieri Powered by Marco Picone
+ * @date: 30/01/2021
+ * @project: Progetto_Dan_IoT
  */
+
+
+
 public class SenMLPack extends ArrayList<SenMLRecord> {
 }
