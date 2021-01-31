@@ -1,15 +1,13 @@
 package api_rest.inventory;
 
-import buildingSecurityController.api.auth.ExampleAuthenticator;
-import buildingSecurityController.api.exception.IInventoryDataManagerConflict;
-import buildingSecurityController.api.exception.IInventoryDataManagerException;
-import buildingSecurityController.api.model.AreaDescriptor;
-import buildingSecurityController.api.model.FloorDescriptor;
-import buildingSecurityController.api.model.PolicyDescriptor;
-import buildingSecurityController.api.model.UserDescriptor;
+
+import api_rest.exceptions.IInventoryDataConflict;
+import api_rest.exceptions.IInventoryDataException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import device.DemoMqttSmartObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import process.MqttSmartObjectProcess;
 import utils.SenMLPack;
 
 import java.io.FileOutputStream;
@@ -17,29 +15,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
+import java.util.List;
 
-    public class InventoryDataManager implements IInventoryCollectorPack{
-        final protected Logger logger = LoggerFactory.getLogger(DefaultInventoryDataCollector.class);
+
+    public class InventoryDataManager implements IInventoryData{
+        final protected Logger logger = LoggerFactory.getLogger(InventoryDataManager.class);
 
 
     @Override
-    public SenMLPack createNewPack(SenMLPack pack) throws IInventoryDataManagerException, IInventoryDataManagerConflict {
-        try {
-            String record = new ObjectMapper().writeValueAsString(pack);
+    public List<DemoMqttSmartObject> getControlPanels() throws IInventoryDataException {
 
-            FileWriter fileWriter = new FileWriter("recordSensorsFile", true);
-            fileWriter.write(record);
-            fileWriter.append("\n");
-            fileWriter.flush();
-            fileWriter.close();
-            logger.info(record);
-
-            return pack;
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return (List<DemoMqttSmartObject>) MqttSmartObjectProcess.panelsList.values();
 
     }
 }
