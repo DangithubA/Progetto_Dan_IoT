@@ -5,6 +5,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import device.DemoMqttSmartObject;
 import exception.MqttSmartObjectConfigurationException;
 import model.RecipeDescriptor;
+import resource.MotorMixerResource;
 import resource.SmartObjectResource;
 import resource.TemperatureSensorResource;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
@@ -14,8 +15,10 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import resource.ValveResource;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -24,6 +27,9 @@ import java.util.UUID;
  * @date: 30/01/2021
  * @project: Progetto_Dan_IoT
  */
+
+//Questo è il main per il comportamento dello smartobject che lancia gli smart object ;
+
 
 public class MqttSmartObjectProcess {
 
@@ -41,11 +47,26 @@ public class MqttSmartObjectProcess {
 
     public static void main(String[] args) {
 
+        // INSERITO PER CARICARE LA RICETTA
+        ObjectMapper om = new ObjectMapper();
+
+        try {
+
+            recipe = om.readValue(new File("src/main/java/data/recipe.json"), RecipeDescriptor.class);
+            // Stampa il set di partenza della sonda prelevato dalla ricetta ricevuta
+            System.out.println("Set di partenza della sonda prelevato dalla ricetta ricevuta");
+            System.out.println(recipe.getTemperatures().get(0));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         try {
 
             logger.info("MQTT SmartObject Started !");
 
-            readConfigurationFile();
+            readConfigurationFile(); // IL MAIN E' SCOMPOSTO IN DUE METODI
             startSmartObject();
 
         }catch (Exception e){
@@ -58,8 +79,8 @@ public class MqttSmartObjectProcess {
         try{
 
             //Generate a random device ID
-            String deviceId = UUID.randomUUID().toString();
-
+            //String deviceId = UUID.randomUUID().toString(); DAN MODIFICATO PER METTERE ID FISSO
+            String deviceId = "QE01";
             //Create Mqtt Client with a Memory Persistence
             MqttClientPersistence persistence = new MemoryPersistence();
             IMqttClient mqttClient = new MqttClient(String.format("tcp://%s:%d",
@@ -84,6 +105,8 @@ public class MqttSmartObjectProcess {
                     new HashMap<String, SmartObjectResource<?>>(){
                         {
                             put("temperature", new TemperatureSensorResource(recipe));
+                            put("Mixer", new MotorMixerResource());
+                            put("SteamValve", new ValveResource());
 
                         }
                     });
@@ -95,7 +118,7 @@ public class MqttSmartObjectProcess {
         }
 
     }
-
+    // CON LA LIBRERIA JAKSON SI POSSONO LEGGERE DEI FILE YAML
     private static void readConfigurationFile() throws MqttSmartObjectConfigurationException {
 
         try{
@@ -104,7 +127,7 @@ public class MqttSmartObjectProcess {
             //File file = new File(classLoader.getResource(WLDT_CONFIGURATION_FILE).getFile());
             File file = new File(MQTT_SMARTOBJECT_CONFIGURATION_FILE);
 
-            ObjectMapper om = new ObjectMapper(new YAMLFactory());
+            ObjectMapper om = new ObjectMapper(new YAMLFactory()); // INDICA DI DESERIALIZZARE UN OGGETTO DI TIPO YAML
 
             mqttSmartObjectConfiguration = om.readValue(file, MqttSmartObjectConfiguration.class);
 

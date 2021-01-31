@@ -24,7 +24,7 @@ import java.util.concurrent.Semaphore;
  * @project: Progetto_Dan_IoT
  */
 
-public class DemoMqttSmartObject implements IMqttSmartObjectDevice {
+public class DemoMqttSmartObject implements IMqttSmartObjectDevice { // implementazione forza a dover implementare i metodi dell'interfaccia
 
     private static final Logger logger = LoggerFactory.getLogger(DemoMqttSmartObject.class);
 
@@ -47,7 +47,7 @@ public class DemoMqttSmartObject implements IMqttSmartObjectDevice {
     private int messageCount;
 
     public DemoMqttSmartObject(){
-        this.objectMapper = new ObjectMapper();
+        this.objectMapper = new ObjectMapper();  // crea un oggetto di jakson per la serializzazione deserializzazione
         this.messageCount = 0;
     }
 
@@ -79,15 +79,28 @@ public class DemoMqttSmartObject implements IMqttSmartObjectDevice {
 
                 //Update value for each available resource
                 //Java Streams - Useful reference link: https://www.baeldung.com/java-maps-streams
-                resourceMap.entrySet()
+                //Esempio
+                //resourceMap.entrySet().stream().forEach(entry ->{
+                //    String key = entry.getKey();
+                //    SmartObjectResource objectResource = entry.getValue();
+                //});
+
+                // si puo abbreviare
+                //resourceMap.entrySet().forEach(entry ->{
+                //
+                //});
+
+                resourceMap.entrySet()  // lista delle chiavi della mappa           // DAN JAVA STREAM FLUSSI OTTIMIZZATI PER V^NAVIGARE LE COLLECTION
                         .forEach(mapResourceEntry -> {
                             try {
                                 if(mapResourceEntry != null){
 
                                     //Refresh Smart Object value
-                                    //mapResourceEntry.getValue().refreshValue(increase);  SOSPESO DA DAN IMPLEMENTARE REFRESH HO SCRITTO (INCREASE)
-
-                                    publishTelemetryData(String.format("%s/%s", baseTopic, mapResourceEntry.getKey()),
+                                    SmartObjectResource smartObjectResource = mapResourceEntry.getValue(); //Queste due righe sotto formula abbreviata
+                                    //smartObjectResource.refreshValue(0.5);
+                                    smartObjectResource.refreshValue();
+                                    //mapResourceEntry.getValue().refreshValue(0.5); // SOSPESO DA DAN IMPLEMENTARE REFRESH HO SCRITTO (INCREASE)
+                                    publishTelemetryData(String.format("%s/%s", baseTopic, mapResourceEntry.getKey()), //METODO PUBLISH RIGA181
                                             new TelemetryMessage(System.currentTimeMillis(), mapResourceEntry.getValue().getType(), mapResourceEntry.getValue()));
                                 }
                             } catch (MqttException | JsonProcessingException e) {
@@ -148,12 +161,12 @@ public class DemoMqttSmartObject implements IMqttSmartObjectDevice {
                 Thread.sleep(this.smartObjectConfiguration.getStartUpDelayMs());
 
                 Timer eventTimer = new Timer();
-                eventTimer.schedule(new EventTask(), 0, this.smartObjectConfiguration.getEventUpdateTimeMs());
+                eventTimer.schedule(new EventTask(), 0, this.smartObjectConfiguration.getEventUpdateTimeMs()); //getEventUpdateTimeMs è il perido specificato della configurazione
 
                 Timer telemetryTimer = new Timer();
                 telemetryTimer.schedule(new TelemetryTask(), 2000, this.smartObjectConfiguration.getTelemetryUpdateTimeMs());
 
-                semaphore.acquire(2);
+                semaphore.acquire(2); // la classe deve rimanere attiva sino a che i due timer non hanno finito
             }
 
         } catch (InterruptedException e) {
@@ -163,12 +176,12 @@ public class DemoMqttSmartObject implements IMqttSmartObjectDevice {
 
     @Override
     public void stop() {
-        //TODO Implement a proper stop ... :)
+        //TODO Implement a proper stop ... :) BLOCCARE I TIMER
     }
 
-    private void publishTelemetryData(String topic, TelemetryMessage telemetryMessage) throws MqttException, JsonProcessingException {
-
-        logger.info("Publishing to Topic: {} Smart Object: {}", topic, telemetryMessage);
+    private void publishTelemetryData(String topic, TelemetryMessage telemetryMessage) throws MqttException, JsonProcessingException { // prende topic dove pubblicare
+                                                                                                // oggetto telemetrymessagge non di mqtt ma definito e strutturato per
+        logger.info("Publishing to Topic: {} Smart Object: {}", topic, telemetryMessage);     // per configurare i messaggi vedi telemetryMessagge
 
         if (mqttClient.isConnected() && telemetryMessage != null && topic != null) {
 
