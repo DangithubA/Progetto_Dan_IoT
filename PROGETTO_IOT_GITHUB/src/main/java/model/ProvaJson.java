@@ -26,6 +26,7 @@ public class ProvaJson {
             System.out.println(rd.getTemperatures().get(2));
             //prova pull
             System.out.println(rd.getTemperatures().get(1));
+            System.out.println(rd.getTemperatures().get(3));
 
         } catch (IOException e) {
             e.printStackTrace();
