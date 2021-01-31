@@ -4,16 +4,22 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import message.EventMessage;
 import message.TelemetryMessage;
+import model.RecipeDescriptor;
 import process.MqttSmartObjectConfiguration;
 import resource.SmartObjectResource;
+import resource.MotorMixerResource;
+import resource.ValveResource;
+import resource.TemperatureSensorResource;
+
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
@@ -24,11 +30,13 @@ import java.util.concurrent.Semaphore;
  * @project: Progetto_Dan_IoT
  */
 
-public class DemoMqttSmartObject implements IMqttSmartObjectDevice { // implementazione forza a dover implementare i metodi dell'interfaccia
+public class PanelMqttSmartObject implements IMqttSmartObjectDevice { // implementazione forza a dover implementare i metodi dell'interfaccia
 
-    private static final Logger logger = LoggerFactory.getLogger(DemoMqttSmartObject.class);
+    private static final Logger logger = LoggerFactory.getLogger(PanelMqttSmartObject.class);
 
     private final ObjectMapper objectMapper;
+
+    private static RecipeDescriptor recipe;
 
     private Semaphore semaphore;
 
@@ -38,7 +46,7 @@ public class DemoMqttSmartObject implements IMqttSmartObjectDevice { // implemen
 
     private String deviceId;
 
-    private Map<String, SmartObjectResource<?>> resourceMap;
+    private HashMap<String, SmartObjectResource<?>> resourceMap;
 
     private static final String HEARTBEAT_EVENT_TYPE = "HEARTBEAT_EVENT";
 
@@ -46,7 +54,7 @@ public class DemoMqttSmartObject implements IMqttSmartObjectDevice { // implemen
 
     private int messageCount;
 
-    public DemoMqttSmartObject(){
+    public PanelMqttSmartObject(){
         this.objectMapper = new ObjectMapper();  // crea un oggetto di jakson per la serializzazione deserializzazione
         this.messageCount = 0;
     }
@@ -55,16 +63,44 @@ public class DemoMqttSmartObject implements IMqttSmartObjectDevice { // implemen
     public void init(MqttSmartObjectConfiguration smartObjectConfiguration,
                      IMqttClient mqttClient,
                      String deviceId,
-                     String baseTopic,
-                     Map<String, SmartObjectResource<?>> resourceMap) {
+                     String baseTopic) {
+                     //String baseTopic,
+                     //Map<String, SmartObjectResource<?>> resourceMap) {
 
         this.smartObjectConfiguration = smartObjectConfiguration;
         this.mqttClient = mqttClient;
         this.deviceId = deviceId;
-        this.resourceMap = resourceMap;
+        //this.resourceMap = resourceMap;
+        this.resourceMap = new HashMap<String, SmartObjectResource<?>>(); // NEW DAN
         this.baseTopic = baseTopic;
 
         this.semaphore = new Semaphore(0);
+
+        // INSERITO PER CARICARE LA RICETTA ERA IN MqttSmartObjectProcess
+        //ObjectMapper om = new ObjectMapper();
+
+        try {
+
+            //recipe = om.readValue(new File("src/main/java/data/recipe.json"), RecipeDescriptor.class);
+            recipe = objectMapper.readValue(new File("src/main/java/data/recipe.json"), RecipeDescriptor.class);
+            // Stampa il set di partenza della sonda prelevato dalla ricetta ricevuta
+            System.out.println("Set di partenza della sonda prelevato dalla ricetta ricevuta");
+            System.out.println(recipe.getTemperatures().get(0));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //new HashMap<String, SmartObjectResource<?>>(){
+        //    {
+        //        put("temperature", new TemperatureSensorResource(recipe));
+        //        put("Mixer", new MotorMixerResource());
+        //        put("SteamValve", new ValveResource());
+
+        //    }
+        this.resourceMap.put("temperature", new TemperatureSensorResource(recipe));
+        this.resourceMap.put("Mixer", new MotorMixerResource());
+        this.resourceMap.put("SteamValve", new ValveResource());
 
         logger.info("Smart Object correctly initialized ! Resource Number: {}", this.resourceMap.keySet().size());
     }

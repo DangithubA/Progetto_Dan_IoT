@@ -1,20 +1,12 @@
 package api_rest.inventory;
 
 
-import api_rest.exceptions.IInventoryDataConflict;
 import api_rest.exceptions.IInventoryDataException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import device.DemoMqttSmartObject;
+import device.PanelMqttSmartObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import process.MqttSmartObjectProcess;
-import utils.SenMLPack;
 
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -23,9 +15,9 @@ import java.util.List;
 
 
     @Override
-    public List<DemoMqttSmartObject> getControlPanels() throws IInventoryDataException {
+    public List<PanelMqttSmartObject> getControlPanels() throws IInventoryDataException {
 
-        return (List<DemoMqttSmartObject>) MqttSmartObjectProcess.panelsList.values();
+        return (List<PanelMqttSmartObject>) MqttSmartObjectProcess.panelsList.values();
 
     }
 }

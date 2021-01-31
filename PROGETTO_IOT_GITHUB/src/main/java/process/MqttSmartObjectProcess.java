@@ -2,12 +2,9 @@ package process;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import device.DemoMqttSmartObject;
+import device.PanelMqttSmartObject;
 import exception.MqttSmartObjectConfigurationException;
 import model.RecipeDescriptor;
-import resource.MotorMixerResource;
-import resource.SmartObjectResource;
-import resource.TemperatureSensorResource;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttClientPersistence;
@@ -15,12 +12,10 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import resource.ValveResource;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.UUID;
 
 /**
  * @author: Daniele Barbieri Powered by Marco Picone
@@ -43,7 +38,7 @@ public class MqttSmartObjectProcess {
 
     private static MqttSmartObjectConfiguration mqttSmartObjectConfiguration;
 
-    public static HashMap<String, DemoMqttSmartObject> panelsList = null; //AGGIUNTO DA TOBI
+    public static HashMap<String, PanelMqttSmartObject> panelsList = null; //AGGIUNTO DA TOBI
 
     public static void main(String[] args) {
 
@@ -80,7 +75,7 @@ public class MqttSmartObjectProcess {
 
             //Generate a random device ID
             //String deviceId = UUID.randomUUID().toString(); DAN MODIFICATO PER METTERE ID FISSO
-            String deviceId = "QE01";
+            String deviceId = "P01";
             //Create Mqtt Client with a Memory Persistence
             MqttClientPersistence persistence = new MemoryPersistence();
             IMqttClient mqttClient = new MqttClient(String.format("tcp://%s:%d",
@@ -97,25 +92,29 @@ public class MqttSmartObjectProcess {
 
             logger.info("MQTT Client Connected ! Client Id: {}", deviceId);
 
-            DemoMqttSmartObject demoMqttSmartObject = new DemoMqttSmartObject();
-            demoMqttSmartObject.init(mqttSmartObjectConfiguration,
+            PanelMqttSmartObject panelMqttSmartObject = new PanelMqttSmartObject();
+            panelMqttSmartObject.init(mqttSmartObjectConfiguration,
                     mqttClient,
                     deviceId,
-                    String.format("iot/device/%s", deviceId),
-                    new HashMap<String, SmartObjectResource<?>>(){
-                        {
-                            put("temperature", new TemperatureSensorResource(recipe));
-                            put("Mixer", new MotorMixerResource());
-                            put("SteamValve", new ValveResource());
+                    String.format("iot/device/%s", deviceId));//,
+                    //new HashMap<String, SmartObjectResource<?>>(){
+                    //    {
+                    //        put("temperature", new TemperatureSensorResource(recipe));
+                    //        put("Mixer", new MotorMixerResource());
+                    //        put("SteamValve", new ValveResource());
 
-                        }
-                    });
+                    //    }
+                    //}
+                    //);
+            //panelsList.put(deviceId, demoMqttSmartObject);
 
-            demoMqttSmartObject.start();
+            panelMqttSmartObject.start();
 
         }catch (Exception e){
             e.printStackTrace();
         }
+
+        //panelsList.put(deviceId, demoMqttSmartObject);
 
     }
     // CON LA LIBRERIA JAKSON SI POSSONO LEGGERE DEI FILE YAML

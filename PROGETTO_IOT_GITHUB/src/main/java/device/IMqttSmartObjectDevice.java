@@ -17,8 +17,8 @@ public interface IMqttSmartObjectDevice {
     public void init(MqttSmartObjectConfiguration smartObjectConfiguration,
                      IMqttClient mqttClient, // gli viene passato mqttclient
                      String deviceId,
-                     String baseTopic,
-                     Map<String, SmartObjectResource<?>> resourceMap); // gli viene passata una lista di risorse è inserita la classe
+                     String baseTopic);
+                     //Map<String, SmartObjectResource<?>> resourceMap); // gli viene passata una lista di risorse è inserita la classe
                                                                         // base per poter inserire qualsiasi tipo di risorsa
     public void start();
 
