@@ -43,6 +43,8 @@ public class MqttSmartObjectProcess {
 
     private static MqttSmartObjectConfiguration mqttSmartObjectConfiguration;
 
+    public static HashMap<String, DemoMqttSmartObject> panelsList = null; //AGGIUNTO DA TOBI
+
     public static void main(String[] args) {
 
         // INSERITO PER CARICARE LA RICETTA

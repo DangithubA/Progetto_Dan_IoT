@@ -1,9 +1,12 @@
 package api_rest.inventory;
 
 
+import api_rest.exceptions.IInventoryDataException;
+import device.DemoMqttSmartObject;
+import java.util.List;
 
 public interface IInventoryData {
 
-    //public String createNewPack(String pack) throws IInventoryDataManagerException, IInventoryDataManagerConflict;
+    public List<DemoMqttSmartObject> getControlPanels() throws IInventoryDataException;
 
 }

@@ -1,7 +1,7 @@
 package api_rest.services;
 
-import cloudApiHttp.persistance.DefaultInventoryDataCollector;
-import cloudApiHttp.persistance.IInventoryCollectorPack;
+import api_rest.inventory.IInventoryData;
+import api_rest.inventory.InventoryDataManager;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
@@ -11,11 +11,12 @@ public class ApiAppConfig extends Configuration {
     @JsonProperty("swagger")
     public SwaggerBundleConfiguration swaggerBundleConfiguration;
 
-    private IInventoryCollectorPack inventoryCollectorPack = null;
+    private IInventoryData inventoryDataManager = null;
 
-    public IInventoryCollectorPack getInventoryCollectorPack(){
-        if(this.inventoryCollectorPack == null)
-            this.inventoryCollectorPack = new DefaultInventoryDataCollector();
-        return this.inventoryCollectorPack;
+    public IInventoryData getInventoryCollectorPack(){
+        if(this.inventoryDataManager == null)
+            this.inventoryDataManager = new InventoryDataManager();
+        return this.inventoryDataManager;
     }
 }
+
