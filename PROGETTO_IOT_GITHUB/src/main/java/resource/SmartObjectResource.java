@@ -68,7 +68,8 @@ public abstract class SmartObjectResource<T> {
      * Use this.value to update the internal field (type T)
      */
 
-    public abstract T refreshValue(T increase);  // MODIFICATO DA DAN INCREASE E RETURN T
+    // public abstract T refreshValue(T increase);  // MODIFICATO DA DAN INCREASE E RETURN T
+    public abstract void refreshValue();
 
     public void setValue(T value) {
         this.value = value;

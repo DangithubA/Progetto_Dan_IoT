@@ -15,9 +15,9 @@ public class MqttSmartObjectConfiguration {
 
     private String deviceNameSpace;
 
-    private int eventUpdateTimeMs;
+    private int eventUpdateTimeMs;  // aggiornamento eventi
 
-    private int telemetryUpdateTimeMs;
+    private int telemetryUpdateTimeMs; // aggiornamento telemetry
 
     private int totalTelemetryMessageLimit = 10000;
 

@@ -1,0 +1,31 @@
+#MQTT Demo Smart Object Configuration
+
+mqttBrokerAddress: 127.0.0.1
+mqttBrokerPort: 1883
+
+deviceNameSpace: com.iot.smartobject
+
+eventUpdateTimeMs: 30000
+
+telemetryUpdateTimeMs: 1000
+
+totalTelemetryMessageLimit: 10000 #0 means no limit
+
+startUpDelayMs: 5000
+
+mqttOutgoingClientQoS: 0
+
+#mqttBrokerAddress: 127.0.0.1
+#mqttBrokerPort: 1883
+
+#deviceNameSpace: com.iot.smartobject
+
+#eventUpdateTimeMs: 30000
+
+#telemetryUpdateTimeMs: 1000
+
+#totalTelemetryMessageLimit: 10000 #0 means no limit
+
+#startUpDelayMs: 5000
+
+#mqttOutgoingClientQoS: 0

@@ -21,16 +21,16 @@ public class ValveResource extends SmartObjectResource<Boolean> {
 
     private static String TYPE_VALUE = "iot:actuator:valve";
 
-    // private Random random;
+    private Random random;
 
     public ValveResource() {
         super(UUID.randomUUID().toString(),
                 UNIT_VALUE,
                 TYPE_VALUE);
 
-        // this.random = new Random(System.currentTimeMillis());
-        // this.value = this.random.nextBoolean();
-        this.value = Boolean.FALSE;
+        this.random = new Random(System.currentTimeMillis());
+        this.value = this.random.nextBoolean();
+        //this.value = Boolean.FALSE;
     }
 
     /**
@@ -39,10 +39,13 @@ public class ValveResource extends SmartObjectResource<Boolean> {
      */
 
     @Override
-    public Boolean refreshValue(Boolean value) {
-        // this.value = this.random.nextBoolean();
-        return this.value;
+    public void refreshValue() {
+        this.value = this.random.nextBoolean();
     }
+    //public Boolean refreshValue(Boolean value) {
+        // this.value = this.random.nextBoolean();
+        //  return this.value;
+    //}
 
 
 }
