@@ -38,7 +38,7 @@ public class MqttSmartObjectProcess {
 
     private static MqttSmartObjectConfiguration mqttSmartObjectConfiguration;
 
-    public static HashMap<String, PanelMqttSmartObject> panelsList = null; //AGGIUNTO DA TOBI
+    public static HashMap<String, PanelMqttSmartObject> panelsList;// = null; //AGGIUNTO DA TOBI
 
     public static void main(String[] args) {
 
@@ -90,9 +90,12 @@ public class MqttSmartObjectProcess {
             options.setConnectionTimeout(10);
             mqttClient.connect(options);
 
-            logger.info("MQTT Client Connected ! Client Id: {}", deviceId);
+            logger.info("AAAAAAAA MQTT Client Connected ! Client Id: {}", deviceId);
 
             PanelMqttSmartObject panelMqttSmartObject = new PanelMqttSmartObject();
+            System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi 1");
+            //panelsList.put(deviceId, panelMqttSmartObject);
+            System.out.println(panelsList);
             panelMqttSmartObject.init(mqttSmartObjectConfiguration,
                     mqttClient,
                     deviceId,
@@ -106,15 +109,20 @@ public class MqttSmartObjectProcess {
                     //    }
                     //}
                     //);
-            //panelsList.put(deviceId, demoMqttSmartObject);
+            //Thread.sleep(4000);
+            //panelsList.put(deviceId, panelMqttSmartObject);
 
             panelMqttSmartObject.start();
+            //System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi 2");
+            //panelsList.put(deviceId, panelMqttSmartObject);
+            //System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi 3");
+            //System.out.println(panelsList);
 
         }catch (Exception e){
             e.printStackTrace();
         }
 
-        //panelsList.put(deviceId, demoMqttSmartObject);
+        //panelsList.put(deviceId, panelMqttSmartObject);
 
     }
     // CON LA LIBRERIA JAKSON SI POSSONO LEGGERE DEI FILE YAML
