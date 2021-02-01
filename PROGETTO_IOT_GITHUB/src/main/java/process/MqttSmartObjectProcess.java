@@ -38,7 +38,7 @@ public class MqttSmartObjectProcess {
 
     private static MqttSmartObjectConfiguration mqttSmartObjectConfiguration;
 
-    public static HashMap<String, PanelMqttSmartObject> panelsList;// = null; //AGGIUNTO DA TOBI
+    public static HashMap<String, PanelMqttSmartObject> panelsList = new HashMap<>(); //AGGIUNTO DA TOBI
 
     public static void main(String[] args) {
 
@@ -94,7 +94,6 @@ public class MqttSmartObjectProcess {
 
             PanelMqttSmartObject panelMqttSmartObject = new PanelMqttSmartObject();
             System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi 1");
-            //panelsList.put(deviceId, panelMqttSmartObject);
             System.out.println(panelsList);
             panelMqttSmartObject.init(mqttSmartObjectConfiguration,
                     mqttClient,
@@ -110,7 +109,7 @@ public class MqttSmartObjectProcess {
                     //}
                     //);
             //Thread.sleep(4000);
-            //panelsList.put(deviceId, panelMqttSmartObject);
+            panelsList.put(deviceId, panelMqttSmartObject);
 
             panelMqttSmartObject.start();
             //System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi 2");
