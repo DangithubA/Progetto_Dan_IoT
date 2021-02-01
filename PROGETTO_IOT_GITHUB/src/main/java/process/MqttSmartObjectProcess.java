@@ -111,10 +111,19 @@ public class MqttSmartObjectProcess {
             //Thread.sleep(4000);
             panelsList.put(deviceId, panelMqttSmartObject);
 
-            panelMqttSmartObject.start();
-            //System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi 2");
-            //panelsList.put(deviceId, panelMqttSmartObject);
-            //System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi 3");
+
+            Thread newThread = new Thread(() -> {
+                try{
+                    panelMqttSmartObject.start();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            });
+            newThread.start();
+
+            System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi 2");
+            System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi 3");
             //System.out.println(panelsList);
 
         }catch (Exception e){
