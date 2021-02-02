@@ -94,10 +94,10 @@ public class MqttSmartObjectProcess {
 
             logger.info("P01 MQTT Client Connected ! Panel Client Id: {}", deviceId01);
 
-            PanelMqttSmartObject panelMqttSmartObject = new PanelMqttSmartObject();
+            PanelMqttSmartObject panelMqttSmartObject01 = new PanelMqttSmartObject();
             //System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi 1");
             //System.out.println(panelsList);
-            panelMqttSmartObject.init(mqttSmartObjectConfiguration,
+            panelMqttSmartObject01.init(mqttSmartObjectConfiguration,
                     mqttClient01,
                     deviceId01,
                     String.format("iot/com.station.cooking.cheese.device/%s", deviceId01));//,  SPOSTATO SU PanelMqttSmartObject
@@ -111,11 +111,11 @@ public class MqttSmartObjectProcess {
             //}
             //);
             //Thread.sleep(4000);
-            panelsList.put(deviceId01, panelMqttSmartObject);
+            panelsList.put(deviceId01, panelMqttSmartObject01);
 
             Thread newThread01 = new Thread(() -> {
                 try {
-                    panelMqttSmartObject.start();
+                    panelMqttSmartObject01.start();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -129,11 +129,11 @@ public class MqttSmartObjectProcess {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    //}
 
         //final int howmanypaneltocreate = 1;
         //if(howmanypaneltocreate==2) {
-/**
+
         try {
 
         //Generate a random com.station.cooking.cheese.device ID
@@ -155,10 +155,10 @@ public class MqttSmartObjectProcess {
 
         logger.info("P01 MQTT Client Connected ! Panel Client Id: {}", deviceId02);
 
-        PanelMqttSmartObject panelMqttSmartObject = new PanelMqttSmartObject();
+        PanelMqttSmartObject panelMqttSmartObject02 = new PanelMqttSmartObject();
         //System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi 1");
         //System.out.println(panelsList);
-        panelMqttSmartObject.init(mqttSmartObjectConfiguration,
+        panelMqttSmartObject02.init(mqttSmartObjectConfiguration,
                 mqttClient02,
                 deviceId02,
                 String.format("iot/com.station.cooking.cheese.device/%s", deviceId02));//,  SPOSTATO SU PanelMqttSmartObject
@@ -172,11 +172,11 @@ public class MqttSmartObjectProcess {
         //}
         //);
         //Thread.sleep(4000);
-        panelsList.put(deviceId02, panelMqttSmartObject);
+        panelsList.put(deviceId02, panelMqttSmartObject02);
 
         Thread newThread02 = new Thread(() -> {
             try {
-                panelMqttSmartObject.start();
+                panelMqttSmartObject02.start();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -195,7 +195,7 @@ public class MqttSmartObjectProcess {
 
         //System.out.println("creazione pannelli completata");
 
-*/
+
 
 //****************************************************************************************
 
