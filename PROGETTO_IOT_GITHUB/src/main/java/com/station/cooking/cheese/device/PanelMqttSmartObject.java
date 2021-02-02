@@ -36,7 +36,7 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice { // impleme
 
     private final ObjectMapper objectMapper;
 
-    private static RecipeDescriptor recipe;
+    private RecipeDescriptor recipe;   // DAN HO TOLTO STATIC
 
     private Semaphore semaphore;
 

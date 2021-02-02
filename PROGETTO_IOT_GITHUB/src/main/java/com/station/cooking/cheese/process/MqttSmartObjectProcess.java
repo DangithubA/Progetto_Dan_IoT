@@ -28,7 +28,7 @@ import java.util.HashMap;
 
 public class MqttSmartObjectProcess {
 
-    private static RecipeDescriptor recipe;
+    // private static RecipeDescriptor recipe;
 
     private static final Logger logger = LoggerFactory.getLogger(MqttSmartObjectProcess.class);
 
@@ -41,21 +41,21 @@ public class MqttSmartObjectProcess {
     public static HashMap<String, PanelMqttSmartObject> panelsList = new HashMap<>(); //AGGIUNTO DA TOBI
 
     public static void main(String[] args) {
+/**
+ // INSERITO PER CARICARE LA RICETTA POI SPOSTATO SU PanelMqttSmartObject
+ ObjectMapper om = new ObjectMapper();
 
-        // INSERITO PER CARICARE LA RICETTA
-        ObjectMapper om = new ObjectMapper();
+ try {
 
-        try {
+ recipe = om.readValue(new File("data/recipe.json"), RecipeDescriptor.class);
+ // Stampa il set di partenza della sonda prelevato dalla ricetta ricevuta
+ System.out.println("Set di partenza della sonda prelevato dalla ricetta ricevuta");
+ System.out.println(recipe.getTemperatures().get(0));
 
-            recipe = om.readValue(new File("data/recipe.json"), RecipeDescriptor.class);
-            // Stampa il set di partenza della sonda prelevato dalla ricetta ricevuta
-            System.out.println("Set di partenza della sonda prelevato dalla ricetta ricevuta");
-            System.out.println(recipe.getTemperatures().get(0));
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+ } catch (IOException e) {
+ e.printStackTrace();
+ }
+ */
 
         try {
 
@@ -64,76 +64,145 @@ public class MqttSmartObjectProcess {
             readConfigurationFile(); // IL MAIN E' SCOMPOSTO IN DUE METODI
             startSmartObject();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static void startSmartObject(){
+    // CREATE THE PANEL CONTROLL P01
+    private static void startSmartObject() {
 
-        try{
+
+        try {
 
             //Generate a random com.station.cooking.cheese.device ID
-            //String deviceId = UUID.randomUUID().toString(); DAN MODIFICATO PER METTERE ID FISSO
-            String deviceId = "P01";
+            //String deviceId01 = UUID.randomUUID().toString(); DAN MODIFICATO PER METTERE ID FISSO
+            String deviceId01 = "P01";
             //Create Mqtt Client with a Memory Persistence
-            MqttClientPersistence persistence = new MemoryPersistence();
-            IMqttClient mqttClient = new MqttClient(String.format("tcp://%s:%d",
+            MqttClientPersistence persistence01 = new MemoryPersistence();
+            IMqttClient mqttClient01 = new MqttClient(String.format("tcp://%s:%d",
                     mqttSmartObjectConfiguration.getMqttBrokerAddress(),
                     mqttSmartObjectConfiguration.getMqttBrokerPort()),
-                    deviceId,
-                    persistence);
+                    deviceId01,
+                    persistence01);
 
             MqttConnectOptions options = new MqttConnectOptions();
             options.setAutomaticReconnect(true);
             options.setCleanSession(true);
             options.setConnectionTimeout(10);
-            mqttClient.connect(options);
+            mqttClient01.connect(options);
 
-            logger.info("AAAAAAAA MQTT Client Connected ! Client Id: {}", deviceId);
+            logger.info("P01 MQTT Client Connected ! Panel Client Id: {}", deviceId01);
 
             PanelMqttSmartObject panelMqttSmartObject = new PanelMqttSmartObject();
-            System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi 1");
-            System.out.println(panelsList);
+            //System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi 1");
+            //System.out.println(panelsList);
             panelMqttSmartObject.init(mqttSmartObjectConfiguration,
-                    mqttClient,
-                    deviceId,
-                    String.format("iot/com.station.cooking.cheese.device/%s", deviceId));//,
-                    //new HashMap<String, SmartObjectResource<?>>(){
-                    //    {
-                    //        put("temperature", new TemperatureSensorResource(recipe));
-                    //        put("Mixer", new MotorMixerResource());
-                    //        put("SteamValve", new ValveResource());
+                    mqttClient01,
+                    deviceId01,
+                    String.format("iot/com.station.cooking.cheese.device/%s", deviceId01));//,  SPOSTATO SU PanelMqttSmartObject
+            //new HashMap<String, SmartObjectResource<?>>(){
+            //    {
+            //        put("temperature", new TemperatureSensorResource(recipe));
+            //        put("Mixer", new MotorMixerResource());
+            //        put("SteamValve", new ValveResource());
 
-                    //    }
-                    //}
-                    //);
+            //    }
+            //}
+            //);
             //Thread.sleep(4000);
-            panelsList.put(deviceId, panelMqttSmartObject);
+            panelsList.put(deviceId01, panelMqttSmartObject);
 
-
-            Thread newThread = new Thread(() -> {
-                try{
+            Thread newThread01 = new Thread(() -> {
+                try {
                     panelMqttSmartObject.start();
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
             });
-            newThread.start();
+            newThread01.start();
 
-            System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi 2");
+            System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi dopo la creazione e attivazione di P01");
             System.out.println(panelsList);
-            System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi 3");
-            //System.out.println(panelsList);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-        //panelsList.put(deviceId, panelMqttSmartObject);
-
     }
+
+        //final int howmanypaneltocreate = 1;
+        //if(howmanypaneltocreate==2) {
+/**
+        try {
+
+        //Generate a random com.station.cooking.cheese.device ID
+        //String deviceId01 = UUID.randomUUID().toString(); DAN MODIFICATO PER METTERE ID FISSO
+        String deviceId02 = "P02";
+        //Create Mqtt Client with a Memory Persistence
+        MqttClientPersistence persistence02 = new MemoryPersistence();
+        IMqttClient mqttClient02 = new MqttClient(String.format("tcp://%s:%d",
+                mqttSmartObjectConfiguration.getMqttBrokerAddress(),
+                mqttSmartObjectConfiguration.getMqttBrokerPort()),
+                deviceId02,
+                persistence02);
+
+        MqttConnectOptions options = new MqttConnectOptions();
+        options.setAutomaticReconnect(true);
+        options.setCleanSession(true);
+        options.setConnectionTimeout(10);
+        mqttClient02.connect(options);
+
+        logger.info("P01 MQTT Client Connected ! Panel Client Id: {}", deviceId02);
+
+        PanelMqttSmartObject panelMqttSmartObject = new PanelMqttSmartObject();
+        //System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi 1");
+        //System.out.println(panelsList);
+        panelMqttSmartObject.init(mqttSmartObjectConfiguration,
+                mqttClient02,
+                deviceId02,
+                String.format("iot/com.station.cooking.cheese.device/%s", deviceId02));//,  SPOSTATO SU PanelMqttSmartObject
+        //new HashMap<String, SmartObjectResource<?>>(){
+        //    {
+        //        put("temperature", new TemperatureSensorResource(recipe));
+        //        put("Mixer", new MotorMixerResource());
+        //        put("SteamValve", new ValveResource());
+
+        //    }
+        //}
+        //);
+        //Thread.sleep(4000);
+        panelsList.put(deviceId02, panelMqttSmartObject);
+
+        Thread newThread02 = new Thread(() -> {
+            try {
+                panelMqttSmartObject.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
+        newThread02.start();
+
+        System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi dopo la creazione e attivazione di P01");
+        System.out.println(panelsList);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+    }    //} else {
+
+        //System.out.println("creazione pannelli completata");
+
+*/
+
+//****************************************************************************************
+
+
+
+//*****************************************************************************************
+
     // CON LA LIBRERIA JAKSON SI POSSONO LEGGERE DEI FILE YAML
     private static void readConfigurationFile() throws MqttSmartObjectConfigurationException {
 
