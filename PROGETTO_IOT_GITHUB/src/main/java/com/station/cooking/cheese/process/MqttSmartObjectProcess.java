@@ -112,7 +112,6 @@ public class MqttSmartObjectProcess {
             //);
             //Thread.sleep(4000);
             panelsList.put(deviceId01, panelMqttSmartObject01);
-
             Thread newThread01 = new Thread(() -> {
                 try {
                     panelMqttSmartObject01.start();

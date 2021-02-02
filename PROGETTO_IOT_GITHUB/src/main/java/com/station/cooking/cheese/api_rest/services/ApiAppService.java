@@ -1,6 +1,7 @@
 package com.station.cooking.cheese.api_rest.services;
 
 
+import com.station.cooking.cheese.api_rest.resource.RecipeResource;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -16,7 +17,7 @@ import java.util.EnumSet;
 
 public class ApiAppService extends Application<ApiAppConfig> {
 
-    private static final Logger logger = LoggerFactory.getLogger(ApiAppConfig.class);
+    private static final Logger logger = LoggerFactory.getLogger(ApiAppService.class);
 
     public static void main(String[] args) throws Exception {
 
@@ -25,9 +26,9 @@ public class ApiAppService extends Application<ApiAppConfig> {
     }
 
 
-    public void run(ApiAppConfig appConfig, Environment environment) throws Exception {
+    public void run(ApiAppConfig appConfig, Environment environment) {
 
-        //environment.jersey().register(new BuildingResource(operatorAppConfig));
+        environment.jersey().register(new RecipeResource(appConfig));
 
         // Enable CORS headers
         final FilterRegistration.Dynamic cors = environment.servlets().addFilter("CORS", CrossOriginFilter.class);
