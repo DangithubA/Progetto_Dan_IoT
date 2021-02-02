@@ -9,23 +9,21 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 
 
-public class InventoryDataManager implements IInventoryData{
+public class InventoryDataManagerTest{
 
-    private static InventoryDataManager instance = new InventoryDataManager();
-    private InventoryDataManager(){}
+    private static InventoryDataManagerTest instance = new InventoryDataManagerTest();
+    private InventoryDataManagerTest(){}
 
-    final protected Logger logger = LoggerFactory.getLogger(InventoryDataManager.class);
+    final protected Logger logger = LoggerFactory.getLogger(InventoryDataManagerTest.class);
 
     public static HashMap<String, PanelMqttSmartObject> panelsList = new HashMap<>();
 
-    public static InventoryDataManager getInstance(){
+    public static InventoryDataManagerTest getInstance(){
         return instance;
     }
 
 
-
-    @Override
-    public HashMap<String, PanelMqttSmartObject> getControlPanels() throws IInventoryDataException {
+    protected HashMap<String, PanelMqttSmartObject> getControlPanels(){
 
         System.out.println(String.format("%s", panelsList.keySet()));
 
@@ -33,7 +31,6 @@ public class InventoryDataManager implements IInventoryData{
 
     }
 
-    @Override
     public void createControlPanel(String id, PanelMqttSmartObject panelMqttSmartObject) throws IInventoryDataException {
         panelsList.put(id, panelMqttSmartObject);
         System.out.println(String.format("%s,%s,%s", panelsList.keySet(), id, panelMqttSmartObject));

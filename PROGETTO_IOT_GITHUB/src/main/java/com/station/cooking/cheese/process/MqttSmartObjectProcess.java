@@ -2,6 +2,8 @@ package com.station.cooking.cheese.process;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.station.cooking.cheese.api_rest.inventory.InventoryDataManager;
+import com.station.cooking.cheese.api_rest.inventory.InventoryDataManagerTest;
 import com.station.cooking.cheese.device.PanelMqttSmartObject;
 import com.station.cooking.cheese.exception.MqttSmartObjectConfigurationException;
 import com.station.cooking.cheese.model.RecipeDescriptor;
@@ -30,6 +32,10 @@ public class MqttSmartObjectProcess {
 
     // private static RecipeDescriptor recipe;
 
+    //private static InventoryDataManagerTest inventoryDataManagerTest = null;
+
+    private static MqttSmartObjectProcess mqttSmartObjectProcess = null;
+
     private static final Logger logger = LoggerFactory.getLogger(MqttSmartObjectProcess.class);
 
     private static final String TAG = "[MQTT-SMARTOBJECT]";
@@ -39,6 +45,8 @@ public class MqttSmartObjectProcess {
     private static MqttSmartObjectConfiguration mqttSmartObjectConfiguration;
 
     public static HashMap<String, PanelMqttSmartObject> panelsList = new HashMap<>(); //AGGIUNTO DA TOBI
+
+    private MqttSmartObjectProcess(){}
 
     public static void main(String[] args) {
 /**
@@ -58,6 +66,9 @@ public class MqttSmartObjectProcess {
  */
 
         try {
+
+            //inventoryDataManagerTest = InventoryDataManagerTest.getInstance();
+
 
             logger.info("MQTT SmartObject Started !");
 
@@ -112,6 +123,11 @@ public class MqttSmartObjectProcess {
             //);
             //Thread.sleep(4000);
             panelsList.put(deviceId01, panelMqttSmartObject01);
+
+            //inventoryDataManagerTest.panelsList.put(deviceId01, panelMqttSmartObject01);
+            //logger.info("{}", inventoryDataManagerTest.panelsList);
+
+
             Thread newThread01 = new Thread(() -> {
                 try {
                     panelMqttSmartObject01.start();
@@ -172,6 +188,9 @@ public class MqttSmartObjectProcess {
         //);
         //Thread.sleep(4000);
         panelsList.put(deviceId02, panelMqttSmartObject02);
+        //inventoryDataManagerTest.panelsList.put(deviceId02, panelMqttSmartObject02);
+
+        logger.info("panelsList: {}", panelsList);
 
         Thread newThread02 = new Thread(() -> {
             try {
@@ -183,7 +202,7 @@ public class MqttSmartObjectProcess {
         });
         newThread02.start();
 
-        System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi dopo la creazione e attivazione di P01");
+        System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi dopo la creazione e attivazione di P02");
         System.out.println(panelsList);
 
         } catch (Exception e) {
@@ -225,4 +244,14 @@ public class MqttSmartObjectProcess {
         }
     }
 
+    public static MqttSmartObjectProcess getMqttSmartObjectProcess(){
+        if(mqttSmartObjectProcess == null) mqttSmartObjectProcess = new MqttSmartObjectProcess();
+        return mqttSmartObjectProcess;
+    }
+
+    public HashMap<String, PanelMqttSmartObject> getPanels(){
+        return panelsList;
+    }
+
 }
+

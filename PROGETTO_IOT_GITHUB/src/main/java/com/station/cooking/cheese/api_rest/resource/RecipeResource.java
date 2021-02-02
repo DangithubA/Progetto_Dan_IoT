@@ -2,6 +2,7 @@ package com.station.cooking.cheese.api_rest.resource;
 
 import com.codahale.metrics.annotation.Timed;
 import com.station.cooking.cheese.api_rest.exceptions.IInventoryDataConflict;
+import com.station.cooking.cheese.api_rest.inventory.InventoryDataManager;
 import com.station.cooking.cheese.api_rest.services.ApiAppConfig;
 import com.station.cooking.cheese.device.PanelMqttSmartObject;
 import com.station.cooking.cheese.process.MqttSmartObjectProcess;
@@ -26,6 +27,8 @@ public class RecipeResource {
 
     final protected Logger logger = LoggerFactory.getLogger(RecipeResource.class);
 
+    private static InventoryDataManager inventoryDataManager = InventoryDataManager.getInstance();
+
     @SuppressWarnings("serial")
     public static class MissingKeyException extends Exception{}
     final ApiAppConfig conf;
@@ -44,12 +47,9 @@ public class RecipeResource {
                                     @Context UriInfo uriInfo) {
         try {
 
-            logger.info("Loading the panels list");
+            logger.info("Loading the panels list {}", inventoryDataManager.panelsList);
 
-            //Check the request
-            HashMap<String, PanelMqttSmartObject> panelsList = MqttSmartObjectProcess.panelsList;
-
-            return Response.ok(panelsList.keySet()).build();
+            return Response.ok(inventoryDataManager.panelsList.keySet()).build();
 
         }catch (Exception e){
             e.printStackTrace();
