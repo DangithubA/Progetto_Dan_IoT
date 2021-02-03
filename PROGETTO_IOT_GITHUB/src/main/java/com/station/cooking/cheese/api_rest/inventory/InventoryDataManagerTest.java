@@ -23,7 +23,7 @@ public class InventoryDataManagerTest{
     }
 
 
-    protected HashMap<String, PanelMqttSmartObject> getControlPanels(){
+    public HashMap<String, PanelMqttSmartObject> getControlPanels(){
 
         System.out.println(String.format("%s", panelsList.keySet()));
 
