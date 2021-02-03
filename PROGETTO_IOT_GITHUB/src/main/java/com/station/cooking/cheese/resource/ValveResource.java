@@ -27,9 +27,10 @@ public class ValveResource extends SmartObjectResource<Boolean> {
                 UNIT_VALUE,
                 TYPE_VALUE);
 
-        this.random = new Random(System.currentTimeMillis());
-        this.value = this.random.nextBoolean();
-        //this.value = Boolean.FALSE;
+        //this.random = new Random(System.currentTimeMillis());
+        //this.value = this.random.nextBoolean();
+        this.value = Boolean.FALSE;
+        System.out.println(this.value);
     }
 
     /**

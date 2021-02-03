@@ -14,72 +14,100 @@ import com.station.cooking.cheese.resource.MotorMixerResource;
 import com.station.cooking.cheese.resource.ValveResource;
 import com.station.cooking.cheese.resource.TemperatureSensorResource;
 
+import static java.lang.Thread.sleep;
+
 
 public class PanelFsmParameter {
 
-        private static RecipeDescriptor recipe;
+    private static RecipeDescriptor recipe;
 
-        private static ObjectMapper objectMapper = new ObjectMapper();
+    private static ObjectMapper objectMapper = new ObjectMapper();
 
-        private static ArrayList<String> phases = new ArrayList<>();
+    private static ArrayList<String> phases = new ArrayList<>();
 
-        private static ArrayList<Double> temperatures= new ArrayList<>();
+    private static ArrayList<Double> temperatures = new ArrayList<>();
 
-        private static ArrayList<Double> times= new ArrayList<>();
+    private static ArrayList<Double> times = new ArrayList<>();
 
-        //public Set<Double> Temperatures;
+    //public Set<Double> Temperatures;
 
 
-        public static void init() {
+    public static void init() {
 
-            // INSERITO PER CARICARE LA RICETTA
+        // INSERITO PER CARICARE LA RICETTA
 
-            try {
+        try {
 
-                //recipe = om.readValue(new File("src/main/java/com.station.cooking.cheese.data/recipe.json"), RecipeDescriptor.class);
-                recipe = objectMapper.readValue(new File("data/recipe.json"), RecipeDescriptor.class);
-                // Stampa il set di partenza della sonda prelevato dalla ricetta ricevuta
-                //System.out.println("Set di partenza della sonda prelevato dalla ricetta ricevuta");
-                //System.out.println(recipe.getTemperatures().get(0));
+            //recipe = om.readValue(new File("src/main/java/com.station.cooking.cheese.data/recipe.json"), RecipeDescriptor.class);
+            recipe = objectMapper.readValue(new File("data/recipe.json"), RecipeDescriptor.class);
+            // Stampa il set di partenza della sonda prelevato dalla ricetta ricevuta
+            //System.out.println("Set di partenza della sonda prelevato dalla ricetta ricevuta");
+            //System.out.println(recipe.getTemperatures().get(0));
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        public static void main(String[] args) {
-
-            String current_phases;
-
-
-            init();
-            System.out.println(recipe.getTemperatures().get(0));
-            phases.addAll(recipe.getPhases());
-            temperatures.addAll(recipe.getTemperatures());
-            times.addAll(recipe.getTimes());
-
-            for(int i=0; i<phases.size(); i++){
-                System.out.println("Quante fasi =" + phases.size());
-                System.out.println("Fase in corso =" + phases.get(i));
-
-                TemperatureSensorResource current_temperature_phase = new TemperatureSensorResource(recipe);
-                    if(i==0){
-                        current_temperature_phase.setValue(temperatures.get(i)-5.0);
-                    }else {
-
-                        current_temperature_phase.setValue(temperatures.get(i) - 10.0);
-                        //temperaturephase.getValue();
-                    }
-                     System.out.println("Temperatura di partenza ="+current_temperature_phase.getValue());
-
-                    while (current_temperature_phase.getValue()<temperatures.get(i)){
-                        current_temperature_phase.refreshValue();
-                        System.out.println("Temperatura aggiornata ="+current_temperature_phase.getValue());
-                    }
-               }
-
-        }
     }
+
+    public static void main(String[] args) throws InterruptedException {
+
+        init();
+        System.out.println(recipe.getTemperatures().get(0));
+        phases.addAll(recipe.getPhases());
+        temperatures.addAll(recipe.getTemperatures());
+        times.addAll(recipe.getTimes());
+
+        TemperatureSensorResource current_temperature_phase = new TemperatureSensorResource(recipe);
+        ValveResource valve_steam = new ValveResource();
+        MotorMixerResource motor_mixer = new MotorMixerResource();
+
+        for (int i = 0; i < phases.size(); i++) {
+            System.out.println("Quante fasi =" + phases.size());
+            System.out.println("Fase in corso =" + phases.get(i));
+
+            double time_phase_set = times.get(i);
+            int time_phase_real = 0;
+
+                if (i == 0) {
+                    current_temperature_phase.setValue(temperatures.get(i) - 5.0);
+
+                } else {
+
+                    current_temperature_phase.setValue(temperatures.get(i) - 10.0);
+
+                }
+                System.out.println("Temperatura di partenza =" + current_temperature_phase.getValue());
+
+                    // second step phase temperature remains constant mixer ON Valve CLOSE
+                    while (current_temperature_phase.getValue() <= temperatures.get(i) || time_phase_real < time_phase_set) {
+
+                        if (current_temperature_phase.getValue() <= temperatures.get(i)) {
+                            // first step phase temperature raises mixer ON Valve OPEN
+                            sleep(1000);
+                            current_temperature_phase.refreshValue();
+                            valve_steam.setValue(true);
+                            motor_mixer.setValue(true);
+
+                            System.out.println("Temperatura aggiornata =" + current_temperature_phase.getValue());
+                            System.out.println("Motore mixer =" + motor_mixer.getValue());
+                            System.out.println("Valvola vapore =" + valve_steam.getValue());
+
+                        } else {
+                            // second step phase temperature remains constant mixer ON Valve CLOSE
+                            sleep(1000);
+                            time_phase_real += 1;
+                            valve_steam.setValue(false);
+                            motor_mixer.setValue(true);
+
+                            System.out.println("Temperatura aggiornata =" + current_temperature_phase.getValue());
+                            System.out.println("Motore mixer =" + motor_mixer.getValue());
+                            System.out.println("Valvola vapore =" + valve_steam.getValue());
+                            System.out.println("Tempo fase =" + time_phase_real);
+                        }
+                    }
+                }
+        }
+}
 
 
