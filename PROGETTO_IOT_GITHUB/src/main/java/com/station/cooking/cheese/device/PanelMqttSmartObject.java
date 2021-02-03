@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
+import java.io.Serializable;
 
 /**
  * @author: Daniele Barbieri Powered by Marco Picone
@@ -30,7 +31,7 @@ import java.util.concurrent.Semaphore;
  * @project: Progetto_Dan_IoT
  */
 
-public class PanelMqttSmartObject implements IMqttSmartObjectDevice { // implementazione forza a dover implementare i metodi dell'interfaccia
+public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implementazione forza a dover implementare i metodi dell'interfaccia
 
     private static final Logger logger = LoggerFactory.getLogger(PanelMqttSmartObject.class);
 
