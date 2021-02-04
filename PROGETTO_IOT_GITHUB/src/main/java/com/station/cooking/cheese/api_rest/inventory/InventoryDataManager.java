@@ -3,29 +3,28 @@ package com.station.cooking.cheese.api_rest.inventory;
 
 import com.station.cooking.cheese.api_rest.exceptions.IInventoryDataException;
 import com.station.cooking.cheese.device.PanelMqttSmartObject;
+import com.station.cooking.cheese.model.PanelDescriptor;
+import com.station.cooking.cheese.model.RecipeDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.*;
 import java.util.HashMap;
 
 
 public class InventoryDataManager implements IInventoryData{
 
-    private static InventoryDataManager instance = new InventoryDataManager();
-    private InventoryDataManager(){}
 
     final protected Logger logger = LoggerFactory.getLogger(InventoryDataManager.class);
 
-    public static HashMap<String, PanelMqttSmartObject> panelsList = new HashMap<>();
-
-    public static InventoryDataManager getInstance(){
-        return instance;
-    }
+    public static HashMap<String, PanelDescriptor> panelsList = new HashMap<>();
 
 
 
     @Override
-    public HashMap<String, PanelMqttSmartObject> getControlPanels() throws IInventoryDataException {
+    public HashMap<String, PanelDescriptor> getControlPanels() throws IInventoryDataException, IOException, ClassNotFoundException {
+
+        serializeFromFile();
 
         System.out.println(String.format("%s", panelsList.keySet()));
 
@@ -34,8 +33,46 @@ public class InventoryDataManager implements IInventoryData{
     }
 
     @Override
-    public void createControlPanel(String id, PanelMqttSmartObject panelMqttSmartObject) throws IInventoryDataException {
-        panelsList.put(id, panelMqttSmartObject);
-        System.out.println(String.format("%s,%s,%s", panelsList.keySet(), id, panelMqttSmartObject));
+    public void createRecipe(String panel_id, RecipeDescriptor recipeDescriptor) throws IInventoryDataException, IOException, ClassNotFoundException {
+
+        serializeFromFile();
+
+        if(panelsList.containsKey(panel_id)){
+            panelsList.get(panel_id).setRecipe(recipeDescriptor);
+        }
+
+        serializeToFile();
+
     }
+
+    @Override
+    public void deleteRecipe(String panel_id) throws IInventoryDataException, IOException, ClassNotFoundException {
+        panelsList.get(panel_id).setRecipe(null);
+    }
+
+    public void serializeFromFile() throws IOException, ClassNotFoundException {
+
+        FileInputStream fi = new FileInputStream(new File("data/myObjects.txt"));
+        ObjectInputStream oi = new ObjectInputStream(fi);
+
+        // Read objects
+        panelsList = (HashMap<String, PanelDescriptor>) oi.readObject();
+
+        System.out.println(panelsList.toString());
+
+        oi.close();
+        fi.close();
+    }
+    public void serializeToFile() throws IOException, ClassNotFoundException {
+
+        FileOutputStream f = new FileOutputStream(new File("data/myObjects.txt"));
+        ObjectOutputStream o = new ObjectOutputStream(f);
+
+        // Write objects to file
+        o.writeObject(panelsList);
+
+        o.close();
+        f.close();
+    }
+
 }

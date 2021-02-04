@@ -1,10 +1,13 @@
 package com.station.cooking.cheese.api_rest.resource;
 
 import com.codahale.metrics.annotation.Timed;
+import com.station.cooking.cheese.api_rest.dto.RecipeCreationRequest;
 import com.station.cooking.cheese.api_rest.exceptions.IInventoryDataConflict;
 import com.station.cooking.cheese.api_rest.inventory.InventoryDataManager;
 import com.station.cooking.cheese.api_rest.services.ApiAppConfig;
 import com.station.cooking.cheese.device.PanelMqttSmartObject;
+import com.station.cooking.cheese.model.PanelDescriptor;
+import com.station.cooking.cheese.model.RecipeDescriptor;
 import com.station.cooking.cheese.process.MqttSmartObjectProcess;
 import io.dropwizard.jersey.errors.ErrorMessage;
 import io.swagger.annotations.Api;
@@ -19,6 +22,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.awt.*;
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @Path("/")
@@ -26,8 +31,6 @@ import java.util.HashMap;
 public class RecipeResource {
 
     final protected Logger logger = LoggerFactory.getLogger(RecipeResource.class);
-
-    private static InventoryDataManager inventoryDataManager = InventoryDataManager.getInstance();
 
     @SuppressWarnings("serial")
     public static class MissingKeyException extends Exception{}
@@ -47,9 +50,123 @@ public class RecipeResource {
                                     @Context UriInfo uriInfo) {
         try {
 
-            logger.info("Loading the panels list {}", inventoryDataManager.panelsList);
+            logger.info("Loading the panels list");
 
-            return Response.ok(inventoryDataManager.panelsList.keySet()).build();
+            return Response.ok(this.conf.getInventoryDataManager().getControlPanels().keySet()).build();
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),"Internal Server Error !")).build();
+        }
+    }
+    @GET
+    @Path("panel/{panel_id}/recipe")
+    @Timed
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @ApiOperation(value="Get Recipe of the Panel")
+    public Response getPanel(@Context ContainerRequestContext req,
+                                  @Context UriInfo uriInfo, @PathParam("panel_id") String panel_id) {
+        try {
+
+            logger.info("Loading Panel's Recipe");
+
+            HashMap<String, PanelDescriptor> panelDescriptorHashMap = new HashMap<>();
+            panelDescriptorHashMap = this.conf.getInventoryDataManager().getControlPanels();
+
+            if (panelDescriptorHashMap.keySet().contains(panel_id)){
+                return Response.ok(panelDescriptorHashMap.get(panel_id).getRecipe()).build();
+            }else{
+                return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(),"Panel Not Found !")).build();
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),"Internal Server Error !")).build();
+        }
+    }
+    @POST
+    @Path("panel/{panel_id}/recipe")
+    @Timed
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @ApiOperation(value="Get Recipe of the Panel")
+    public Response createRecipe(@Context ContainerRequestContext req,
+                                 @Context UriInfo uriInfo, @PathParam("panel_id") String panel_id, RecipeCreationRequest recipeCreationRequest) {
+        try {
+
+            logger.info("Creating Panel's Recipe");
+
+            if (this.conf.getInventoryDataManager().getControlPanels().containsKey(panel_id)){
+
+                RecipeDescriptor recipeDescriptor = (RecipeDescriptor) recipeCreationRequest;
+
+                this.conf.getInventoryDataManager().createRecipe(panel_id, recipeDescriptor);
+
+                return Response.created(new URI(String.format("%s/%s",uriInfo.getAbsolutePath()))).build();
+
+            }else{
+                return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(),"Panel Not Found !")).build();
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),"Internal Server Error !")).build();
+        }
+    }
+    @DELETE
+    @Path("panel/{panel_id}/recipe")
+    @Timed
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @ApiOperation(value="Get Recipe of the Panel")
+    public Response deleteRecipe(@Context ContainerRequestContext req,
+                                 @Context UriInfo uriInfo, @PathParam("panel_id") String panel_id) {
+        try {
+
+            logger.info("Creating Panel's Recipe");
+
+            if (this.conf.getInventoryDataManager().getControlPanels().containsKey(panel_id)){
+
+                this.conf.getInventoryDataManager().deleteRecipe(panel_id);
+
+                return Response.created(new URI(String.format("%s/%s",uriInfo.getAbsolutePath()))).build();
+
+            }else{
+                return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(),"Panel Not Found !")).build();
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),"Internal Server Error !")).build();
+        }
+    }
+    @PUT
+    @Path("panel/{panel_id}/recipe/{phase}/temperature")
+    @Timed
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @ApiOperation(value="Get Recipe of the Panel")
+    public Response modifyTemperature(@Context ContainerRequestContext req,
+                                 @Context UriInfo uriInfo, @PathParam("panel_id") String panel_id, @PathParam("phase") String phase, Double temperature) {
+        try {
+
+            logger.info("Modifying Phase{} temperature", phase);
+
+            if (this.conf.getInventoryDataManager().getControlPanels().containsKey(panel_id)){
+
+                ArrayList<String> phases = this.conf.getInventoryDataManager().getControlPanels().get(panel_id).getRecipe().getPhases();
+                ArrayList<Double> temps = this.conf.getInventoryDataManager().getControlPanels().get(panel_id).getRecipe().getTemperatures();
+
+                //DEVO FARE UN FOR CHE SCORRE I PHASES CERCA QUELLO CON LA STESSA STRINGA, IDENTIFICA QUALE E' IL SUO INDICE,
+                //E IN QUELL'INDICE DI TEMPS INSERISCO LA TEMPERATURA
+
+
+                return Response.created(new URI(String.format("%s/%s",uriInfo.getAbsolutePath()))).build();
+
+            }else{
+                return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(),"Panel Not Found !")).build();
+            }
 
         }catch (Exception e){
             e.printStackTrace();

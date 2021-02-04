@@ -3,10 +3,11 @@ package com.station.cooking.cheese.process;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.station.cooking.cheese.api_rest.inventory.InventoryDataManager;
-import com.station.cooking.cheese.api_rest.inventory.InventoryDataManagerTest;
+
 import com.station.cooking.cheese.api_rest.services.ApiAppService;
 import com.station.cooking.cheese.device.PanelMqttSmartObject;
 import com.station.cooking.cheese.exception.MqttSmartObjectConfigurationException;
+import com.station.cooking.cheese.model.PanelDescriptor;
 import com.station.cooking.cheese.model.RecipeDescriptor;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -17,10 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.HashMap;
 
 /**
@@ -34,12 +32,6 @@ import java.util.HashMap;
 
 public class MqttSmartObjectProcess {
 
-    // private static RecipeDescriptor recipe;
-
-    private static InventoryDataManagerTest inventoryDataManagerTest = null;
-
-    private static MqttSmartObjectProcess mqttSmartObjectProcess = null;
-
     private static final Logger logger = LoggerFactory.getLogger(MqttSmartObjectProcess.class);
 
     private static final String TAG = "[MQTT-SMARTOBJECT]";
@@ -48,7 +40,7 @@ public class MqttSmartObjectProcess {
 
     private static MqttSmartObjectConfiguration mqttSmartObjectConfiguration;
 
-    //public static HashMap<String, PanelMqttSmartObject> panelsList = new HashMap<>(); //AGGIUNTO DA TOBI
+    public static HashMap<String, PanelMqttSmartObject> panelsList = new HashMap<>(); //AGGIUNTO DA TOBI
 
 
     public static void main(String[] args) {
@@ -69,9 +61,6 @@ public class MqttSmartObjectProcess {
  */
 
         try {
-
-            inventoryDataManagerTest = InventoryDataManagerTest.getInstance();
-
 
             logger.info("MQTT SmartObject Started !");
 
@@ -125,25 +114,7 @@ public class MqttSmartObjectProcess {
             //}
             //);
             //Thread.sleep(4000);
-            //panelsList.put(deviceId01, panelMqttSmartObject01);
-
-            HashMap<String, String> map = new HashMap<>();
-
-            map.put(deviceId01, panelMqttSmartObject01.getDeviceId());
-
-            FileOutputStream f = new FileOutputStream(new File("myObjects.txt"));
-            ObjectOutputStream o = new ObjectOutputStream(f);
-
-            // Write objects to file
-            o.writeObject(map);
-
-            o.close();
-            f.close();
-
-            logger.info("dal process {}", inventoryDataManagerTest.panelsList);
-
-            logger.info("dall inventory: {}", InventoryDataManagerTest.getInstance().getControlPanels());
-
+            panelsList.put(deviceId01, panelMqttSmartObject01);
 
 
             Thread newThread01 = new Thread(() -> {
@@ -205,11 +176,8 @@ public class MqttSmartObjectProcess {
         //}
         //);
         //Thread.sleep(4000);
-        //panelsList.put(deviceId02, panelMqttSmartObject02);
+        panelsList.put(deviceId02, panelMqttSmartObject02);
 
-        inventoryDataManagerTest.panelsList.put(deviceId02, panelMqttSmartObject02);
-
-        logger.info("panelsList: {}", inventoryDataManagerTest.panelsList);
 
         Thread newThread02 = new Thread(() -> {
             try {
@@ -221,8 +189,12 @@ public class MqttSmartObjectProcess {
         });
         newThread02.start();
 
+        serializePanelsList();
+
         System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi dopo la creazione e attivazione di P02");
         //System.out.println(panelsList);
+
+
 
         } catch (Exception e) {
 
@@ -261,6 +233,25 @@ public class MqttSmartObjectProcess {
             logger.error("{} {}", TAG, errorMessage);
             throw new MqttSmartObjectConfigurationException(errorMessage);
         }
+    }
+
+    public static void serializePanelsList() throws IOException {
+
+        HashMap<String, PanelDescriptor> panelDescriptors = new HashMap<>();
+
+        panelsList.keySet().forEach(panel -> {
+            panelDescriptors.put(panel, new PanelDescriptor(panelsList.get(panel).getDeviceId(), panelsList.get(panel).getRecipe()));
+        });
+
+        FileOutputStream f = new FileOutputStream(new File("data/myObjects.txt"));
+        ObjectOutputStream o = new ObjectOutputStream(f);
+
+        // Write objects to file
+        o.writeObject(panelDescriptors);
+
+        o.close();
+        f.close();
+
     }
 
 }

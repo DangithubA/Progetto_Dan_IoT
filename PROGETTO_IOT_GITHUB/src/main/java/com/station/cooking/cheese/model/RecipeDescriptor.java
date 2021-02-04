@@ -2,6 +2,7 @@ package com.station.cooking.cheese.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -11,7 +12,7 @@ import java.util.ArrayList;
  */
 
 
-public class RecipeDescriptor {
+public class RecipeDescriptor implements Serializable {
 
     @JsonProperty("nome_ricetta")
     private String name;

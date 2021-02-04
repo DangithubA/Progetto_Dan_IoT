@@ -279,4 +279,6 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
         this.deviceId = deviceId;
     }
 
+    public RecipeDescriptor getRecipe(){return recipe;}
+
 }

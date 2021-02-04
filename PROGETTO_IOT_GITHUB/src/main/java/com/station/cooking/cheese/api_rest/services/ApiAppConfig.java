@@ -15,7 +15,7 @@ public class ApiAppConfig extends Configuration {
 
     public IInventoryData getInventoryDataManager(){
         if(this.inventoryDataManager == null)
-            this.inventoryDataManager = InventoryDataManager.getInstance();
+            this.inventoryDataManager = new InventoryDataManager();
         return this.inventoryDataManager;
     }
 }
