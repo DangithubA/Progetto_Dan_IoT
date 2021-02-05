@@ -2,6 +2,7 @@ package com.station.cooking.cheese.device;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.station.cooking.cheese.model.RecipeDescriptor;
+import com.station.cooking.cheese.resource.SmartObjectResource;
 import org.apache.commons.lang3.ArrayUtils;
 import org.checkerframework.checker.units.qual.Temperature;
 
@@ -88,6 +89,13 @@ public class PanelCycle {
         int time_phase_real = 0;
 
         //panelMqttSmartObject.getResourceMap().get(TemperatureSensorResource.getValue());
+        panelMqttSmartObject.getResourceMap().entrySet().forEach(mapResourceEntry->{
+                    SmartObjectResource smartObjectResource = mapResourceEntry.getValue();
+                    smartObjectResource.refreshValue();
+                }
+                );
+        // MI SONO PIANTATO QUI ******************************************************
+
 
         /**
         for (int i = 0; i < phases.size(); i++) {
