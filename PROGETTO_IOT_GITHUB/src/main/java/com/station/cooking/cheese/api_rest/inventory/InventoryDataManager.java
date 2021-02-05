@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -39,6 +40,50 @@ public class InventoryDataManager implements IInventoryData{
 
         if(panelsList.containsKey(panel_id)){
             panelsList.get(panel_id).setRecipe(recipeDescriptor);
+        }
+
+        serializeToFile();
+
+    }
+
+
+    @Override
+    public void updateTemp(ArrayList<Double> temps, String panel_id) throws IOException, ClassNotFoundException {
+
+        serializeFromFile();
+
+        if(panelsList.containsKey(panel_id)){
+            RecipeDescriptor recipe = panelsList.get(panel_id).getRecipe();
+            recipe.setTemperatures(temps);
+            panelsList.get(panel_id).setRecipe(recipe);
+        }
+
+        serializeToFile();
+
+    }
+    @Override
+    public void updateTime(ArrayList<Double> times, String panel_id) throws IOException, ClassNotFoundException {
+
+        serializeFromFile();
+
+        if(panelsList.containsKey(panel_id)){
+            RecipeDescriptor recipe = panelsList.get(panel_id).getRecipe();
+            recipe.setTimes(times);
+            panelsList.get(panel_id).setRecipe(recipe);
+        }
+
+        serializeToFile();
+
+    }
+    @Override
+    public void updatePhase(ArrayList<String> phases, String panel_id) throws IOException, ClassNotFoundException {
+
+        serializeFromFile();
+
+        if(panelsList.containsKey(panel_id)){
+            RecipeDescriptor recipe = panelsList.get(panel_id).getRecipe();
+            recipe.setPhases(phases);
+            panelsList.get(panel_id).setRecipe(recipe);
         }
 
         serializeToFile();

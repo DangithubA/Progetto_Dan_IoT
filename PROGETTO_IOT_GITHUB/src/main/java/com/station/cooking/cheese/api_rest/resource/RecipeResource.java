@@ -90,7 +90,7 @@ public class RecipeResource {
     @Timed
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @ApiOperation(value="Get Recipe of the Panel")
+    @ApiOperation(value="Update Recipe of the Panel")
     public Response createRecipe(@Context ContainerRequestContext req,
                                  @Context UriInfo uriInfo, @PathParam("panel_id") String panel_id, RecipeCreationRequest recipeCreationRequest) {
         try {
@@ -103,7 +103,7 @@ public class RecipeResource {
 
                 this.conf.getInventoryDataManager().createRecipe(panel_id, recipeDescriptor);
 
-                return Response.created(new URI(String.format("%s/%s",uriInfo.getAbsolutePath()))).build();
+                return Response.created(new URI(String.format("%s",uriInfo.getAbsolutePath()))).build();
 
             }else{
                 return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(),"Panel Not Found !")).build();
@@ -119,7 +119,7 @@ public class RecipeResource {
     @Timed
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @ApiOperation(value="Get Recipe of the Panel")
+    @ApiOperation(value="Delete Recipe of the Panel")
     public Response deleteRecipe(@Context ContainerRequestContext req,
                                  @Context UriInfo uriInfo, @PathParam("panel_id") String panel_id) {
         try {
@@ -130,7 +130,7 @@ public class RecipeResource {
 
                 this.conf.getInventoryDataManager().deleteRecipe(panel_id);
 
-                return Response.created(new URI(String.format("%s/%s",uriInfo.getAbsolutePath()))).build();
+                return Response.created(new URI(String.format("%s/",uriInfo.getAbsolutePath()))).build();
 
             }else{
                 return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(),"Panel Not Found !")).build();
@@ -145,11 +145,13 @@ public class RecipeResource {
     @Path("panel/{panel_id}/recipe/{phase}/temperature")
     @Timed
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @ApiOperation(value="Get Recipe of the Panel")
+    @Consumes(MediaType.TEXT_PLAIN)
+    @ApiOperation(value="Modify temperature of a phase")
     public Response modifyTemperature(@Context ContainerRequestContext req,
-                                 @Context UriInfo uriInfo, @PathParam("panel_id") String panel_id, @PathParam("phase") String phase, Double temperature) {
+                                 @Context UriInfo uriInfo, @PathParam("panel_id") String panel_id, @PathParam("phase") String phase, String temperature) {
         try {
+
+            Double doubleTemp = Double.parseDouble(temperature);
 
             logger.info("Modifying Phase{} temperature", phase);
 
@@ -158,11 +160,88 @@ public class RecipeResource {
                 ArrayList<String> phases = this.conf.getInventoryDataManager().getControlPanels().get(panel_id).getRecipe().getPhases();
                 ArrayList<Double> temps = this.conf.getInventoryDataManager().getControlPanels().get(panel_id).getRecipe().getTemperatures();
 
-                //DEVO FARE UN FOR CHE SCORRE I PHASES CERCA QUELLO CON LA STESSA STRINGA, IDENTIFICA QUALE E' IL SUO INDICE,
-                //E IN QUELL'INDICE DI TEMPS INSERISCO LA TEMPERATURA
+                for(int i = 0; i < 5; i++){
+                    if(phases.get(i).equals(phase)){
+                        temps.set(i, doubleTemp);
+                    }
+                }
 
+                this.conf.getInventoryDataManager().updateTemp(temps, panel_id);
 
-                return Response.created(new URI(String.format("%s/%s",uriInfo.getAbsolutePath()))).build();
+                return Response.created(new URI(String.format("%s",uriInfo.getAbsolutePath()))).build();
+
+            }else{
+                return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(),"Panel Not Found !")).build();
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),"Internal Server Error !")).build();
+        }
+    }
+    @PUT
+    @Path("panel/{panel_id}/recipe/{phase}/time")
+    @Timed
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.TEXT_PLAIN)
+    @ApiOperation(value="Modify time of a phase")
+    public Response modifyTime(@Context ContainerRequestContext req,
+                                      @Context UriInfo uriInfo, @PathParam("panel_id") String panel_id, @PathParam("phase") String phase, String time) {
+        try {
+
+            Double doubleTime = Double.parseDouble(time);
+
+            logger.info("Modifying Phase{} time", phase);
+
+            if (this.conf.getInventoryDataManager().getControlPanels().containsKey(panel_id)){
+
+                ArrayList<String> phases = this.conf.getInventoryDataManager().getControlPanels().get(panel_id).getRecipe().getPhases();
+                ArrayList<Double> times = this.conf.getInventoryDataManager().getControlPanels().get(panel_id).getRecipe().getTimes();
+
+                for(int i = 0; i < 5; i++){
+                    if(phases.get(i).equals(phase)){
+                        times.set(i, doubleTime);
+                    }
+                }
+
+                this.conf.getInventoryDataManager().updateTime(times, panel_id);
+
+                return Response.created(new URI(String.format("%s",uriInfo.getAbsolutePath()))).build();
+
+            }else{
+                return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(),"Panel Not Found !")).build();
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),"Internal Server Error !")).build();
+        }
+    }
+    @PUT
+    @Path("panel/{panel_id}/recipe/{phase}")
+    @Timed
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.TEXT_PLAIN)
+    @ApiOperation(value="Modify name of a phase")
+    public Response modifyPhase(@Context ContainerRequestContext req,
+                               @Context UriInfo uriInfo, @PathParam("panel_id") String panel_id, @PathParam("phase") String phase, String newPhase) {
+        try {
+
+            logger.info("Modifying Phase{} temperature", phase);
+
+            if (this.conf.getInventoryDataManager().getControlPanels().containsKey(panel_id)){
+
+                ArrayList<String> phases = this.conf.getInventoryDataManager().getControlPanels().get(panel_id).getRecipe().getPhases();
+
+                for(int i = 0; i < 5; i++){
+                    if(phases.get(i).equals(phase)){
+                        phases.set(i, newPhase);
+                    }
+                }
+
+                this.conf.getInventoryDataManager().updatePhase(phases, panel_id);
+
+                return Response.created(new URI(String.format("%s",uriInfo.getAbsolutePath()))).build();
 
             }else{
                 return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(),"Panel Not Found !")).build();
