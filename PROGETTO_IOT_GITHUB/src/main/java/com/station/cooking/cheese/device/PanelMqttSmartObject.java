@@ -55,6 +55,10 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
 
     private int messageCount;
 
+    public HashMap<String, SmartObjectResource<?>> getResourceMap() {
+        return resourceMap;
+    }
+
     public PanelMqttSmartObject(){
         this.objectMapper = new ObjectMapper();  // crea un oggetto di jakson per la serializzazione deserializzazione
         this.messageCount = 0;

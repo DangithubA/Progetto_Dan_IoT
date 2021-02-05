@@ -1,5 +1,7 @@
 package com.station.cooking.cheese.resource;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  * @author: Daniele Barbieri Powered by Marco Picone
  * @date: 30/01/2021
@@ -14,6 +16,8 @@ public abstract class SmartObjectResource<T> {
 
     private String type;
 
+    protected ObjectMapper objectMapper;
+
     private Double increase;  // AGGIUNTO DA DAN
 
     protected T value;
@@ -25,6 +29,7 @@ public abstract class SmartObjectResource<T> {
         this.id = id;
         this.unit = unit;
         this.type = type;
+        //this.objectmapper = new ObjectMapper();
     }
 
     public String getId() {

@@ -40,7 +40,8 @@ public class ValveResource extends SmartObjectResource<Boolean> {
 
     @Override
     public void refreshValue() {
-        this.value = this.random.nextBoolean();
+        this.value = Boolean.FALSE;
+        //this.value = this.random.nextBoolean();
     }
     //public Boolean refreshValue(Boolean value) {
         // this.value = this.random.nextBoolean();

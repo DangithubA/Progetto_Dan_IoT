@@ -1,6 +1,11 @@
 package com.station.cooking.cheese.resource;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.station.cooking.cheese.model.RecipeDescriptor;
+import com.station.cooking.cheese.utils.SenMLPack;
+import com.station.cooking.cheese.utils.SenMLRecord;
+
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -15,9 +20,14 @@ public class TemperatureSensorResource extends SmartObjectResource<Double> {
 
     private double startTemperature;
 
-    public static final String RESOURCE_UNIT = "C";
+    public static final String RESOURCE_UNIT = "Cel";
 
     public static final String RESOURCE_TYPE = "iot:sensor:temperature";
+
+
+
+
+
 
     public TemperatureSensorResource(RecipeDescriptor recipe){
         super(UUID.randomUUID().toString(), TemperatureSensorResource.RESOURCE_UNIT, TemperatureSensorResource.RESOURCE_TYPE);
@@ -29,6 +39,7 @@ public class TemperatureSensorResource extends SmartObjectResource<Double> {
         //this.startTemperature = 20.0;
         //this.value = startTemperature;
         //this.value = 20.0;
+        this.objectMapper = new ObjectMapper();
     }
 
     /**
@@ -46,5 +57,34 @@ public class TemperatureSensorResource extends SmartObjectResource<Double> {
     //    this.value = this.value + increase;
     //    return this.value;
     //}  // MODIFICATO DA DAN AGGIUNTO INCREASE + RETURN VALUE
+
+
+    /**
+     * Create the SenML Response with the updated value and the resource information
+     * @return
+     */
+    private Optional<String> getJsonSenmlResponse(){
+
+        try{
+
+            SenMLPack senMLPack = new SenMLPack();
+
+            SenMLRecord senMLRecord = new SenMLRecord();
+            senMLRecord.setBaseName(String.format("%s", this.getId()));
+            //senMLRecord.setBver(SENSOR_VERSION);
+            senMLRecord.setUnit(RESOURCE_UNIT);
+            senMLRecord.setValue(this.value);
+            senMLRecord.setTime(System.currentTimeMillis());
+
+            senMLPack.add(senMLRecord);
+
+            return Optional.of(this.objectMapper.writeValueAsString(senMLPack));
+
+        }catch (Exception e){
+            return Optional.empty();
+        }
+    }
+
+
 
 }
