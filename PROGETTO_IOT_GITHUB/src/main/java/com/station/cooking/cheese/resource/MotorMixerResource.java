@@ -1,5 +1,6 @@
 package com.station.cooking.cheese.resource;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.station.cooking.cheese.utils.SenMLPack;
 import com.station.cooking.cheese.utils.SenMLRecord;
 import org.slf4j.Logger;
@@ -35,6 +36,7 @@ public class MotorMixerResource extends SmartObjectResource<Double> {
         //this.value = this.random.nextBoolean(); ultimo tentativo
         // this.value = Boolean.FALSE;
         // this.value = false;
+        this.objectMapper = new ObjectMapper();
     }
 
     /**

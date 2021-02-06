@@ -1,5 +1,6 @@
 package com.station.cooking.cheese.resource;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.station.cooking.cheese.utils.SenMLPack;
 import com.station.cooking.cheese.utils.SenMLRecord;
 import org.slf4j.Logger;
@@ -33,6 +34,7 @@ public class ValveResource extends SmartObjectResource<Double> {
         //this.random = new Random(System.currentTimeMillis());
         //this.value = this.random.nextBoolean();
         //this.value = Boolean.FALSE;                     ultimo tentativo
+        this.objectMapper = new ObjectMapper();
         System.out.println(this.value);
     }
 
