@@ -72,11 +72,11 @@ public class MotorMixerResource extends SmartObjectResource<Double> {
             SenMLPack senMLPack = new SenMLPack();
 
             SenMLRecord senMLRecord = new SenMLRecord();
-            senMLRecord.setBaseName(String.format("%s", this.getId()));
+            senMLRecord.setBn(String.format("%s", this.getId()));
             //senMLRecord.setBver(SENSOR_VERSION);
-            senMLRecord.setUnit(UNIT_VALUE);
-            senMLRecord.setValue(this.value);
-            senMLRecord.setTime(System.currentTimeMillis());
+            senMLRecord.setU(UNIT_VALUE);
+            senMLRecord.setV(this.value);
+            senMLRecord.setT(System.currentTimeMillis());
 
             senMLPack.add(senMLRecord);
 

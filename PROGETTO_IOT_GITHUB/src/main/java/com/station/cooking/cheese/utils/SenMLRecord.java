@@ -2,25 +2,25 @@ package com.station.cooking.cheese.utils;
 
 
 /**
-+---------------+------+---------+
-|         SenML | JSON | Type    |
-+---------------+------+---------+
-|     Base Name | bn   | String  |
-|     Base Time | bt   | Number  |
-|     Base Unit | bu   | String  |
-|    Base Value | bv   | Number  |
-|       Version | bver | Number  |
-|          Name | n    | String  |
-|          Unit | u    | String  |
-|         Value | v    | Number  |
-|  String Value | vs   | String  |
-| Boolean Value | vb   | Boolean |
-|    Data Value | vd   | String  |
-|     Value Sum | s    | Number  |
-|          Time | t    | Number  |
-|   Update Time | ut   | Number  |
-+---------------+------+---------+
-*/
+ +---------------+------+---------+
+ |         SenML | JSON | Type    |
+ +---------------+------+---------+
+ |     Base Name | bn   | String  |
+ |     Base Time | bt   | Number  |
+ |     Base Unit | bu   | String  |
+ |    Base Value | bv   | Number  |
+ |       Version | bver | Number  |
+ |          Name | n    | String  |
+ |          Unit | u    | String  |
+ |         Value | v    | Number  |
+ |  String Value | vs   | String  |
+ | Boolean Value | vb   | Boolean |
+ |    Data Value | vd   | String  |
+ |     Value Sum | s    | Number  |
+ |          Time | t    | Number  |
+ |   Update Time | ut   | Number  |
+ +---------------+------+---------+
+ */
 
 public class SenMLRecord {
 
@@ -68,115 +68,115 @@ public class SenMLRecord {
 		this.ut = ut;
 	}
 
-	public String getBaseName() {
+	public String getBn() {
 		return bn;
 	}
 
-	public void setBaseName(String bn) {
+	public void setBn(String bn) {
 		this.bn = bn;
 	}
 
-	public Number getBaseTime() {
+	public Number getBt() {
 		return bt;
 	}
 
-	public void setBaseTime(Number bt) {
+	public void setBt(Number bt) {
 		this.bt = bt;
 	}
 
-	public String getBaseUnit() {
+	public String getBu() {
 		return bu;
 	}
 
-	public void setBaseUnit(String bu) {
+	public void setBu(String bu) {
 		this.bu = bu;
 	}
 
-	public Number getBaseValue() {
+	public Number getBv() {
 		return bv;
 	}
 
-	public void setBaseValue(Number bv) {
+	public void setBv(Number bv) {
 		this.bv = bv;
 	}
 
-	public Number getVersion() {
+	public Number getBver() {
 		return bver;
 	}
 
-	public void setVersion(Number bver) {
+	public void setBver(Number bver) {
 		this.bver = bver;
 	}
 
-	public String getName() {
+	public String getN() {
 		return n;
 	}
 
-	public void setName(String n) {
+	public void setN(String n) {
 		this.n = n;
 	}
 
-	public String getUnit() {
+	public String getU() {
 		return u;
 	}
 
-	public void setUnit(String u) {
+	public void setU(String u) {
 		this.u = u;
 	}
 
-	public Number getValue() {
+	public Number getV() {
 		return v;
 	}
 
-	public void setValue(Number v) {
+	public void setV(Number v) {
 		this.v = v;
 	}
 
-	public String getStringValue() {
+	public String getVs() {
 		return vs;
 	}
 
-	public void setStringValue(String vs) {
+	public void setVs(String vs) {
 		this.vs = vs;
 	}
 
-	public Boolean getBooleanValue() {
+	public Boolean getVb() {
 		return vb;
 	}
 
-	public void setBooleanValue(Boolean vb) {
+	public void setVb(Boolean vb) {
 		this.vb = vb;
 	}
 
-	public String getDataValue() {
+	public String getVd() {
 		return vd;
 	}
 
-	public void setDataValue(String vd) {
+	public void setVd(String vd) {
 		this.vd = vd;
 	}
 
-	public Number getValueSum() {
+	public Number getS() {
 		return s;
 	}
 
-	public void setValueSum(Number s) {
+	public void setS(Number s) {
 		this.s = s;
 	}
 
-	public Number getTime() {
+	public Number getT() {
 		return t;
 	}
 
-	public void setTime(Number t) {
+	public void setT(Number t) {
 		this.t = t;
 	}
 
-	public Number getUpdateTime() {
+	public Number getUt() {
 		return ut;
 	}
 
-	public void setUpdateTime(Number ut) {
+	public void setUt(Number ut) {
 		this.ut = ut;
 	}
 
