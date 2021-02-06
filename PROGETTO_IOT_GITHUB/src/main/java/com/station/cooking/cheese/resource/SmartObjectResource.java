@@ -2,6 +2,8 @@ package com.station.cooking.cheese.resource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.Optional;
+
 /**
  * @author: Daniele Barbieri Powered by Marco Picone
  * @date: 30/01/2021
@@ -81,6 +83,8 @@ public abstract class SmartObjectResource<T>{
    // public void setValue(T value) {
    //     this.value = value;
    // }  // DOMANDA SI PUO USARE PER SETTARE IL VALORE INIZIALE DELLA SONDA ?
+
+    public abstract Optional<String> getJsonSenmlResponse();
 
     @Override
     public String toString() {

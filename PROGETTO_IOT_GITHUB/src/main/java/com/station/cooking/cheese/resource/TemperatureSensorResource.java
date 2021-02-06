@@ -58,31 +58,33 @@ public class TemperatureSensorResource extends SmartObjectResource<Double> {
     public void setValue(Double value) {
         this.value = value;
     }
-        /**
-         * Create the SenML Response with the updated value and the resource information
-         * @return
-         */
-        private Optional<String> getJsonSenmlResponse() {
 
-            try {
+    /**
+     * Create the SenML Response with the updated value and the resource information
+     * @return
+     */
+    @Override
+    public Optional<String> getJsonSenmlResponse() {
 
-                SenMLPack senMLPack = new SenMLPack();
+        try {
 
-                SenMLRecord senMLRecord = new SenMLRecord();
-                senMLRecord.setBaseName(String.format("%s", this.getId()));
-                //senMLRecord.setBver(SENSOR_VERSION);
-                senMLRecord.setUnit(RESOURCE_UNIT);
-                senMLRecord.setValue(this.value);
-                senMLRecord.setTime(System.currentTimeMillis());
+            SenMLPack senMLPack = new SenMLPack();
 
-                senMLPack.add(senMLRecord);
+            SenMLRecord senMLRecord = new SenMLRecord();
+            senMLRecord.setBaseName(String.format("%s", this.getId()));
+            //senMLRecord.setBver(SENSOR_VERSION);
+            senMLRecord.setUnit(RESOURCE_UNIT);
+            senMLRecord.setValue(this.value);
+            senMLRecord.setTime(System.currentTimeMillis());
 
-                return Optional.of(this.objectMapper.writeValueAsString(senMLPack));
+            senMLPack.add(senMLRecord);
 
-            } catch (Exception e) {
-                return Optional.empty();
-            }
+            return Optional.of(this.objectMapper.writeValueAsString(senMLPack));
+
+        } catch (Exception e) {
+            return Optional.empty();
         }
+    }
 
 
 }

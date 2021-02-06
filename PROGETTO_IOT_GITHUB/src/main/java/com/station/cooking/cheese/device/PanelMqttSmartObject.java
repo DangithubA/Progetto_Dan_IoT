@@ -139,10 +139,11 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
                                     //Refresh Smart Object value
                                     SmartObjectResource smartObjectResource = mapResourceEntry.getValue(); //Queste due righe sotto formula abbreviata
                                     //smartObjectResource.refreshValue(0.5);
-                                    smartObjectResource.refreshValue();
+                                    //smartObjectResource.refreshValue();
                                     //mapResourceEntry.getValue().refreshValue(0.5); // SOSPESO DA DAN IMPLEMENTARE REFRESH HO SCRITTO (INCREASE)
                                     publishTelemetryData(String.format("%s/%s", baseTopic, mapResourceEntry.getKey()), //METODO PUBLISH RIGA181
-                                            new TelemetryMessage(System.currentTimeMillis(), mapResourceEntry.getValue().getType(), mapResourceEntry.getValue()));
+                                                            smartObjectResource);
+                                            //new TelemetryMessage(System.currentTimeMillis(), mapResourceEntry.getValue().getType(), mapResourceEntry.getValue()));
                                 }
                             } catch (MqttException | JsonProcessingException e) {
                                 logger.error("Error Publishing Message ! Error: {}", e.getLocalizedMessage());
@@ -220,15 +221,19 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
         //TODO Implement a proper stop ... :) BLOCCARE I TIMER
     }
 
-    private void publishTelemetryData(String topic, TelemetryMessage telemetryMessage) throws MqttException, JsonProcessingException { // prende topic dove pubblicare
+    //private void publishTelemetryData(String topic, TelemetryMessage telemetryMessage) throws MqttException, JsonProcessingException { // prende topic dove pubblicare
+
                                                                                                 // oggetto telemetrymessagge non di mqtt ma definito e strutturato per
-        logger.info("Publishing to Topic: {} Smart Object: {}", topic, telemetryMessage);     // per configurare i messaggi vedi telemetryMessagge
+    private void publishTelemetryData(String topic, SmartObjectResource smartObjectResource) throws MqttException, JsonProcessingException {
+        //logger.info("Publishing to Topic: {} Smart Object: {}", topic, telemetryMessage);
+        logger.info("Publishing to Topic: {} Smart Object: {}", topic, smartObjectResource.getJsonSenmlResponse().toString());     // per configurare i messaggi vedi telemetryMessagge
 
-        if (mqttClient.isConnected() && telemetryMessage != null && topic != null) {
+        //if (mqttClient.isConnected() && telemetryMessage != null && topic != null) {
+        if (mqttClient.isConnected() && smartObjectResource.getJsonSenmlResponse().toString() != null && topic != null) {
 
-            String msgString = this.objectMapper.writeValueAsString(telemetryMessage);
+            //String msgString = this.objectMapper.writeValueAsString(telemetryMessage);
 
-            MqttMessage msg = new MqttMessage(msgString.getBytes());
+            MqttMessage msg = new MqttMessage(smartObjectResource.getJsonSenmlResponse().toString().getBytes());
             //Set com.station.cooking.cheese.message QoS
             msg.setQos(this.smartObjectConfiguration.getMqttOutgoingClientQoS());
 

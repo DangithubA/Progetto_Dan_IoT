@@ -99,7 +99,7 @@ public class PanelCycle {
         final double[] motor_percentage_work = {0.0};
         final double[] valve_percentage_work = {0.0};
         double time_phase_set = 0.0;
-        int time_phase_real = 0;
+        double time_phase_real = 0.0;
 
         //panelMqttSmartObject.getResourceMap().get(TemperatureSensorResource.getValue());   // ESEMPIO
         //panelMqttSmartObject.getResourceMap().entrySet().forEach(mapResourceEntry->{       // ESEMPIO
@@ -113,6 +113,7 @@ public class PanelCycle {
             System.out.println("Fase in corso =" + phases.get(i));
             Double temp = new Double(temperatures.get(i));
             time_phase_set = times.get(i);
+            time_phase_real = 0.0;
             int index = i;
 
             if (i == 0) {
@@ -132,7 +133,7 @@ public class PanelCycle {
                             }// else {
                             //   NON OBBLIGATORIO
                             //}
-            });
+                });
 
             } else {
                 // al secondo ciclo mette il valore simulato della sonda di temperatura a -10 °C dal SET
@@ -145,59 +146,67 @@ public class PanelCycle {
                     }
                 });
             }
-                while (current_temperature_phase[0] <= temperatures.get(i) || time_phase_real < time_phase_set) {
-
-                    if (current_temperature_phase[0] <= temperatures.get(i)) {
-                        // first step phase temperature raises & mixer is ON & Valve is OPEN
-                        sleep(1000);
-                        panelMqttSmartObject.getResourceMap().entrySet().forEach(mapResourceEntry -> {
-                            if (mapResourceEntry.getKey() == "Temperature") {
-                                mapResourceEntry.getValue().refreshValue();
-                                current_temperature_phase[0] = mapResourceEntry.getValue().getValue();
-                                System.out.println(String.format("TEMPERATURA ATTUALE DELLA FASE %s =", index + 1) + " " + Arrays.toString(current_temperature_phase));
-                            } else if (mapResourceEntry.getKey() == "Mixer") {
-                                mapResourceEntry.getValue().setValue(100.0);
-                                motor_percentage_work[0] = mapResourceEntry.getValue().getValue();
-                                System.out.println(String.format("VELOCITA' MIXER %s =", index + 1) + " " + Arrays.toString(motor_percentage_work));
-                            } else if (mapResourceEntry.getKey() == "SteamValve") {
-                                mapResourceEntry.getValue().setValue(100.0);
-                                motor_percentage_work[0] = mapResourceEntry.getValue().getValue();
-                                System.out.println(String.format("APERTURA VALVOLA VSPORE %s =", index + 1) + " " + Arrays.toString(motor_percentage_work));
-                            }
-                        });
+            while (current_temperature_phase[0] < temperatures.get(i) || time_phase_real <= time_phase_set) {
+                System.out.println("DEBUG");
+                System.out.println(current_temperature_phase[0]);
+                System.out.println(temperatures.get(i));
+                System.out.println(time_phase_real);
+                System.out.println(time_phase_set);
+                System.out.println(i);
 
 
-                        //"Mixer", new MotorMixerResource());
-                        //this.resourceMap.put("SteamValve"
+                if (current_temperature_phase[0] < temperatures.get(i)) {
+                    // first step phase temperature raises & mixer is ON & Valve is OPEN
+                    sleep(1000);
+                    panelMqttSmartObject.getResourceMap().entrySet().forEach(mapResourceEntry -> {
+                        if (mapResourceEntry.getKey() == "Temperature") {
+                            mapResourceEntry.getValue().refreshValue();
+                            current_temperature_phase[0] = mapResourceEntry.getValue().getValue();
+                            System.out.println(String.format("TEMPERATURA ATTUALE DELLA FASE %s =", index + 1) + " " + Arrays.toString(current_temperature_phase));
+                        } else if (mapResourceEntry.getKey() == "Mixer") {
+                            mapResourceEntry.getValue().setValue(100.0);
+                            motor_percentage_work[0] = mapResourceEntry.getValue().getValue();
+                            System.out.println(String.format("VELOCITA' MIXER %s =", index + 1) + " " + Arrays.toString(motor_percentage_work));
+                        } else if (mapResourceEntry.getKey() == "SteamValve") {
+                            mapResourceEntry.getValue().setValue(100.0);
+                            valve_percentage_work[0] = mapResourceEntry.getValue().getValue();
+                            System.out.println(String.format("APERTURA VALVOLA VSPORE %s =", index + 1) + " " + Arrays.toString(valve_percentage_work));
+                        }
+                    });
 
-                        //current_temperature_phase.refreshValue();
-                        //valve_steam.setValue(true);
-                        //motor_mixer.setValue(true);
 
-                        //System.out.println("Temperatura aggiornata =" + current_temperature_phase.getValue());
-                        //System.out.println("Motore mixer =" + motor_mixer.getValue());
-                        //System.out.println("Valvola vapore =" + valve_steam.getValue());
-                    } else {
-                        // second step phase temperature remains constant & mixer is ON & Valve is CLOSE
-                        sleep(1000);
-                        panelMqttSmartObject.getResourceMap().entrySet().forEach(mapResourceEntry -> {
-                            if (mapResourceEntry.getKey() == "Temperature") {
-                                mapResourceEntry.getValue().getValue();
-                                current_temperature_phase[0] = mapResourceEntry.getValue().getValue();
-                                System.out.println(String.format("TEMPERATURA ATTUALE DELLA FASE %s =", index + 1) + " " + Arrays.toString(current_temperature_phase));
-                            } else if (mapResourceEntry.getKey() == "Mixer") {
-                                mapResourceEntry.getValue().setValue(50.0);
-                                motor_percentage_work[0] = mapResourceEntry.getValue().getValue();
-                                System.out.println(String.format("VELOCITA' MIXER %s =", index + 1) + " " + Arrays.toString(motor_percentage_work));
-                            } else if (mapResourceEntry.getKey() == "SteamValve") {
-                                mapResourceEntry.getValue().setValue(0.0);
-                                motor_percentage_work[0] = mapResourceEntry.getValue().getValue();
-                                System.out.println(String.format("APERTURA VALVOLA VSPORE %s =", index + 1) + " " + Arrays.toString(motor_percentage_work));
-                            }
-                        });
+                    //"Mixer", new MotorMixerResource());
+                    //this.resourceMap.put("SteamValve"
 
-                    }
+                    //current_temperature_phase.refreshValue();
+                    //valve_steam.setValue(true);
+                    //motor_mixer.setValue(true);
+
+                    //System.out.println("Temperatura aggiornata =" + current_temperature_phase.getValue());
+                    //System.out.println("Motore mixer =" + motor_mixer.getValue());
+                    //System.out.println("Valvola vapore =" + valve_steam.getValue());
+                } else {
+                    // second step phase temperature remains constant & mixer is ON & Valve is CLOSE
+                    sleep(1000);
+                    panelMqttSmartObject.getResourceMap().entrySet().forEach(mapResourceEntry -> {
+                        if (mapResourceEntry.getKey() == "Temperature") {
+                            //mapResourceEntry.getValue().getValue();
+                            //current_temperature_phase[0] = mapResourceEntry.getValue().getValue();
+                            System.out.println(String.format("TEMPERATURA ATTUALE DELLA FASE %s =", index + 1) + " " + Arrays.toString(current_temperature_phase));
+                        } else if (mapResourceEntry.getKey() == "Mixer") {
+                            mapResourceEntry.getValue().setValue(50.0);
+                            motor_percentage_work[0] = mapResourceEntry.getValue().getValue();
+                            System.out.println(String.format("VELOCITA' MIXER %s =", index + 1) + " " + Arrays.toString(motor_percentage_work));
+                        } else if (mapResourceEntry.getKey() == "SteamValve") {
+                            mapResourceEntry.getValue().setValue(0.0);
+                            valve_percentage_work[0] = mapResourceEntry.getValue().getValue();
+                            System.out.println(String.format("APERTURA VALVOLA VSPORE %s =", index + 1) + " " + Arrays.toString(valve_percentage_work));
+                        }
+                        //time_phase_real += time_phase_real;
+                    });
+                    time_phase_real = time_phase_real+1.0;
                 }
+            }
 
         }
 

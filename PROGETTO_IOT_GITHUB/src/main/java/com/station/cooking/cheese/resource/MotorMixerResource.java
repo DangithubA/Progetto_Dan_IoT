@@ -1,8 +1,11 @@
 package com.station.cooking.cheese.resource;
 
+import com.station.cooking.cheese.utils.SenMLPack;
+import com.station.cooking.cheese.utils.SenMLRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 
@@ -53,6 +56,35 @@ public class MotorMixerResource extends SmartObjectResource<Double> {
         this.value = value;
 
     }
+
+    /**
+     * Create the SenML Response with the updated value and the resource information
+     * @return
+     */
+
+    @Override
+    public Optional<String> getJsonSenmlResponse() {
+
+        try {
+
+            SenMLPack senMLPack = new SenMLPack();
+
+            SenMLRecord senMLRecord = new SenMLRecord();
+            senMLRecord.setBaseName(String.format("%s", this.getId()));
+            //senMLRecord.setBver(SENSOR_VERSION);
+            senMLRecord.setUnit(UNIT_VALUE);
+            senMLRecord.setValue(this.value);
+            senMLRecord.setTime(System.currentTimeMillis());
+
+            senMLPack.add(senMLRecord);
+
+            return Optional.of(this.objectMapper.writeValueAsString(senMLPack));
+
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
+
 
 
 /**
