@@ -103,7 +103,7 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
         //        put("SteamValve", new ValveResource());
 
         //    }
-        this.resourceMap.put("temperature", new TemperatureSensorResource(recipe));
+        this.resourceMap.put("Temperature", new TemperatureSensorResource(recipe));
         this.resourceMap.put("Mixer", new MotorMixerResource());
         this.resourceMap.put("SteamValve", new ValveResource());
 

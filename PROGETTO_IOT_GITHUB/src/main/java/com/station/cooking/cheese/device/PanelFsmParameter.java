@@ -86,8 +86,8 @@ public class PanelFsmParameter {
                             // first step phase temperature raises mixer ON Valve OPEN
                             sleep(1000);
                             current_temperature_phase.refreshValue();
-                            valve_steam.setValue(true);
-                            motor_mixer.setValue(true);
+                            valve_steam.setValue(1.0); // era true ultimo tentativo
+                            motor_mixer.setValue(1.0); // era true ultimo tentativo
 
                             System.out.println("Temperatura aggiornata =" + current_temperature_phase.getValue());
                             System.out.println("Motore mixer =" + motor_mixer.getValue());
@@ -97,8 +97,8 @@ public class PanelFsmParameter {
                             // second step phase temperature remains constant mixer ON Valve CLOSE
                             sleep(1000);
                             time_phase_real += 1;
-                            valve_steam.setValue(false);
-                            motor_mixer.setValue(true);
+                            valve_steam.setValue(0.0);// era false ultimo tentativo
+                            motor_mixer.setValue(1.0);// era true ultimo tentativo
 
                             System.out.println("Temperatura aggiornata =" + current_temperature_phase.getValue());
                             System.out.println("Motore mixer =" + motor_mixer.getValue());

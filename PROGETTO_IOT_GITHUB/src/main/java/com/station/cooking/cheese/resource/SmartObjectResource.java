@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @project: Progetto_Dan_IoT
  */
 
-public abstract class SmartObjectResource<T> {
+public abstract class SmartObjectResource<T>{
 
     private String id;
 
@@ -20,7 +20,7 @@ public abstract class SmartObjectResource<T> {
 
     private Double increase;  // AGGIUNTO DA DAN
 
-    protected T value;
+    protected Double value;
 
     public SmartObjectResource() {
     }
@@ -56,7 +56,7 @@ public abstract class SmartObjectResource<T> {
         this.type = type;
     }
 
-    public T getValue(){
+    public Double getValue(){
         return this.value;
     }
 
@@ -76,9 +76,11 @@ public abstract class SmartObjectResource<T> {
     // public abstract T refreshValue(T increase);  // MODIFICATO DA DAN INCREASE E RETURN T
     public abstract void refreshValue();
 
-    public void setValue(T value) {
-        this.value = value;
-    }  // DOMANDA SI PUO USARE PER SETTARE IL VALORE INIZIALE DELLA SONDA ?
+    public abstract void setValue(Double Value);
+
+   // public void setValue(T value) {
+   //     this.value = value;
+   // }  // DOMANDA SI PUO USARE PER SETTARE IL VALORE INIZIALE DELLA SONDA ?
 
     @Override
     public String toString() {

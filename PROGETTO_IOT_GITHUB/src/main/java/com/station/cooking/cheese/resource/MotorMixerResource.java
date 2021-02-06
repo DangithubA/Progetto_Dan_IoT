@@ -13,7 +13,7 @@ import java.util.UUID;
  */
 
 
-public class MotorMixerResource extends SmartObjectResource<Boolean> {
+public class MotorMixerResource extends SmartObjectResource<Double> {
 
     private static final Logger logger = LoggerFactory.getLogger(MotorMixerResource.class);
 
@@ -29,7 +29,7 @@ public class MotorMixerResource extends SmartObjectResource<Boolean> {
                 TYPE_VALUE);
 
         this.random = new Random(System.currentTimeMillis());
-        this.value = this.random.nextBoolean();
+        //this.value = this.random.nextBoolean(); ultimo tentativo
         // this.value = Boolean.FALSE;
         // this.value = false;
     }
@@ -41,15 +41,18 @@ public class MotorMixerResource extends SmartObjectResource<Boolean> {
 
     @Override
     public void refreshValue() {
-        this.value = this.random.nextBoolean();
+        //this.value = this.random.nextBoolean(); ultimo tentativo
     }
     //public Boolean refreshValue(Boolean value) {
-        // this.value = this.random.nextBoolean();
-        //return this.value;
+    // this.value = this.random.nextBoolean();
+    //return this.value;
     //}
 
+    @Override
+    public void setValue(Double value) {
+        this.value = value;
 
-}
+    }
 
 
 /**
@@ -59,3 +62,4 @@ public class MotorMixerResource extends SmartObjectResource<Boolean> {
  // block of code to be executed if the condition is false
  }
  */
+}

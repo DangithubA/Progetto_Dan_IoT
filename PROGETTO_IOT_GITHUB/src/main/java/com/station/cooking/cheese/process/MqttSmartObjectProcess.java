@@ -5,6 +5,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.station.cooking.cheese.api_rest.inventory.InventoryDataManager;
 
 import com.station.cooking.cheese.api_rest.services.ApiAppService;
+import com.station.cooking.cheese.device.PanelCycle;
 import com.station.cooking.cheese.device.PanelMqttSmartObject;
 import com.station.cooking.cheese.exception.MqttSmartObjectConfigurationException;
 import com.station.cooking.cheese.model.PanelDescriptor;
@@ -130,6 +131,9 @@ public class MqttSmartObjectProcess {
             System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi dopo la creazione e attivazione di P01");
             //System.out.println(panelsList);
 
+            PanelCycle panelCycle01 = new PanelCycle(panelMqttSmartObject01);
+            panelCycle01.panelCycleRun();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -182,6 +186,7 @@ public class MqttSmartObjectProcess {
         Thread newThread02 = new Thread(() -> {
             try {
                 panelMqttSmartObject02.start();
+                //PanelCycle panelCycle01 = new PanelCycle(panelMqttSmartObject02);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -194,15 +199,26 @@ public class MqttSmartObjectProcess {
         System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi dopo la creazione e attivazione di P02");
         //System.out.println(panelsList);
 
-
+        //PanelCycle panelCycle01 = new PanelCycle(panelMqttSmartObject01);
 
         } catch (Exception e) {
 
             e.printStackTrace();
         }
+
+
+        //PanelCycle panelCycle01 = new PanelCycle(panelMqttSmartObject01);
+
+
+
+
     }    //} else {
 
         //System.out.println("creazione pannelli completata");
+
+
+
+
 
 
 

@@ -9,6 +9,7 @@ import org.checkerframework.checker.units.qual.Temperature;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 
 import com.station.cooking.cheese.resource.MotorMixerResource;
@@ -16,6 +17,8 @@ import com.station.cooking.cheese.resource.ValveResource;
 import com.station.cooking.cheese.resource.TemperatureSensorResource;
 
 import com.station.cooking.cheese.device.PanelFsmParameter;
+
+import javax.imageio.stream.ImageInputStream;
 
 import static java.lang.Thread.sleep;
 
@@ -42,9 +45,17 @@ public class PanelCycle {
 
     public PanelCycle(PanelMqttSmartObject panelMqttSmartObject) {
         this.panelMqttSmartObject = panelMqttSmartObject;
-        this.phases.addAll(recipe.getPhases());
-        this.temperatures.addAll(recipe.getTemperatures());
-        this.times.addAll(recipe.getTimes());
+        //this.phases.addAll(recipe.getPhases());
+        //this.temperatures.addAll(recipe.getTemperatures());
+        //this.times.addAll(recipe.getTimes());
+        //this.phases = recipe.getPhases();
+        //this.temperatures = recipe.getTemperatures();
+        //this.times = recipe.getTimes();
+
+        this.phases = panelMqttSmartObject.getRecipe().getPhases();
+        this.temperatures = panelMqttSmartObject.getRecipe().getTemperatures();
+        this.times = panelMqttSmartObject.getRecipe().getTimes();
+
         //this.panelMqttSmartObject.getResourceMap();
 
     }
@@ -84,9 +95,11 @@ public class PanelCycle {
 */
     public void panelCycleRun() {
 
-        double current_temperature_phase = 0.0;
+        final double[] current_temperature_phase = {0.0};
         double time_phase_set = 0.0;
         int time_phase_real = 0;
+
+
 
         //panelMqttSmartObject.getResourceMap().get(TemperatureSensorResource.getValue());
         panelMqttSmartObject.getResourceMap().entrySet().forEach(mapResourceEntry->{
@@ -94,6 +107,49 @@ public class PanelCycle {
                     smartObjectResource.refreshValue();
                 }
                 );
+
+        for (int i = 0; i < phases.size(); i++) {
+            System.out.println("Quante fasi =" + phases.size());
+            System.out.println("Fase in corso =" + phases.get(i));
+            Double temp = new Double(temperatures.get(i));
+            time_phase_set = times.get(i);
+            int index = i;
+
+            if (i == 0) {
+
+                // al primo ciclo mette il valore simulato della sonda di temperatura a -5 °C dal SET
+                panelMqttSmartObject.getResourceMap().entrySet().forEach(mapResourceEntry-> {
+                            if (mapResourceEntry.getKey() == "Temperature") {
+                                mapResourceEntry.getValue().setValue(temp-5.0);
+                                current_temperature_phase[0] = mapResourceEntry.getValue().getValue();
+                                System.out.println(String.format("TEMPERATURA DI PARTENZA FASE %s =", index+1)+" "+Arrays.toString(current_temperature_phase));
+
+                                System.out.println(mapResourceEntry.getValue().getValue());
+                                mapResourceEntry.getValue().setValue(temperatures.get(index));
+                                System.out.println("E' QUESTA ??????????????????????? 02 02 02 02 ??????????????????");
+                                System.out.println(mapResourceEntry.getValue().getValue());
+
+                            }// else {
+                            //   NON OBBLIGATORIO
+                            //}
+            });
+
+            } else {
+                // al secondo ciclo mette il valore simulato della sonda di temperatura a -10 °C dal SET
+                panelMqttSmartObject.getResourceMap().entrySet().forEach(mapResourceEntry-> {
+                            if (mapResourceEntry.getKey() == "Temperature") {
+                                mapResourceEntry.getValue().setValue(temp-10.0);
+                                current_temperature_phase[0] = mapResourceEntry.getValue().getValue();
+                                System.out.println(String.format("TEMPERATURA DI PARTENZA FASE %s =", index+1)+" "+Arrays.toString(current_temperature_phase));
+
+                            }
+            });
+
+
+
+
+
+
         // MI SONO PIANTATO QUI ******************************************************
 
 
@@ -149,4 +205,14 @@ public class PanelCycle {
     */
     }
 
+    //public static void main(String[] args) {
+    //
+    //    PanelCycle()
+
+    //}
+
+
+
+    }
+    }
 }
