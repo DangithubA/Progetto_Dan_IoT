@@ -52,7 +52,7 @@ public class TemperatureSensorResource extends SmartObjectResource<Double> {
     //public Double refreshValue(Double increase) {
     //    this.value = this.value + increase;
     //    return this.value;
-    //}  // MODIFICATO DA DAN AGGIUNTO INCREASE + RETURN VALUE
+    //}  // MODIFICATO AGGIUNTO INCREASE + RETURN VALUE
 
     @Override
     public void setValue(Double value) {

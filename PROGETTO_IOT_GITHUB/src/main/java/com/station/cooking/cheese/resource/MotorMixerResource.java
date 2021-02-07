@@ -21,7 +21,7 @@ public class MotorMixerResource extends SmartObjectResource<Double> {
 
     private static final Logger logger = LoggerFactory.getLogger(MotorMixerResource.class);
 
-    private static String UNIT_VALUE = "Boolean";
+    private static String UNIT_VALUE = "%";
 
     private static String TYPE_VALUE = "iot:actuator:motor";
 
@@ -33,7 +33,7 @@ public class MotorMixerResource extends SmartObjectResource<Double> {
                 TYPE_VALUE);
 
         this.random = new Random(System.currentTimeMillis());
-        //this.value = this.random.nextBoolean(); ultimo tentativo
+        //this.value = this.random.nextBoolean();
         // this.value = Boolean.FALSE;
         // this.value = false;
         this.objectMapper = new ObjectMapper();
@@ -46,7 +46,7 @@ public class MotorMixerResource extends SmartObjectResource<Double> {
 
     @Override
     public void refreshValue() {
-        //this.value = this.random.nextBoolean(); ultimo tentativo
+    //this.value = this.random.nextBoolean();
     }
     //public Boolean refreshValue(Boolean value) {
     // this.value = this.random.nextBoolean();

@@ -20,7 +20,7 @@ public abstract class SmartObjectResource<T>{
 
     protected ObjectMapper objectMapper;
 
-    private Double increase;  // AGGIUNTO DA DAN
+    private Double increase;
 
     protected Double value;
 
@@ -64,11 +64,11 @@ public abstract class SmartObjectResource<T>{
 
     public Double getIncrease() {
         return increase;
-    } // AGGIUNTO DA DAN
+    }
 
     public void setIncrease(Double increase) {
         this.increase = increase;
-    } // AGGIUNTO DA DAN
+    }
 
     /**
      * Method used to refresh emulated com.station.cooking.cheese.resource internal value
@@ -82,7 +82,7 @@ public abstract class SmartObjectResource<T>{
 
    // public void setValue(T value) {
    //     this.value = value;
-   // }  // DOMANDA SI PUO USARE PER SETTARE IL VALORE INIZIALE DELLA SONDA ?
+   // }  // SI PUO USARE PER SETTARE IL VALORE INIZIALE DELLA SONDA ?
 
     public abstract Optional<String> getJsonSenmlResponse();
 

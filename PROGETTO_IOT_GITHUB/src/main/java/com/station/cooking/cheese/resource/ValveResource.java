@@ -20,7 +20,7 @@ public class ValveResource extends SmartObjectResource<Double> {
 
     private static final Logger logger = LoggerFactory.getLogger(ValveResource.class);
 
-    private static String UNIT_VALUE = "Boolean";
+    private static String UNIT_VALUE = "%";
 
     private static String TYPE_VALUE = "iot:actuator:valve";
 
@@ -33,7 +33,7 @@ public class ValveResource extends SmartObjectResource<Double> {
 
         //this.random = new Random(System.currentTimeMillis());
         //this.value = this.random.nextBoolean();
-        //this.value = Boolean.FALSE;                     ultimo tentativo
+        //this.value = Boolean.FALSE;
         this.objectMapper = new ObjectMapper();
         System.out.println(this.value);
     }
@@ -45,8 +45,8 @@ public class ValveResource extends SmartObjectResource<Double> {
 
     @Override
     public void refreshValue() {
-        //this.value = Boolean.FALSE;           ultimo tentativo
-        //this.value = this.random.nextBoolean();
+    //this.value = Boolean.FALSE;
+    //this.value = this.random.nextBoolean();
     }
     //public Boolean refreshValue(Boolean value) {
     // this.value = this.random.nextBoolean();
