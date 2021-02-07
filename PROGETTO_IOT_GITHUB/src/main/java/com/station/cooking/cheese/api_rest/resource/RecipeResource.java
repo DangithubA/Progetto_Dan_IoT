@@ -74,7 +74,7 @@ public class RecipeResource {
             HashMap<String, PanelDescriptor> panelDescriptorHashMap = new HashMap<>();
             panelDescriptorHashMap = this.conf.getInventoryDataManager().getControlPanels();
 
-            if (panelDescriptorHashMap.keySet().contains(panel_id)){
+            if (panelDescriptorHashMap.containsKey(panel_id)){
                 return Response.ok(panelDescriptorHashMap.get(panel_id).getRecipe()).build();
             }else{
                 return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(),"Panel Not Found !")).build();

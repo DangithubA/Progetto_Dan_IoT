@@ -1,6 +1,9 @@
 package com.station.cooking.cheese.api_rest.inventory;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.MapType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.station.cooking.cheese.api_rest.exceptions.IInventoryDataException;
 import com.station.cooking.cheese.device.PanelMqttSmartObject;
 import com.station.cooking.cheese.model.PanelDescriptor;
@@ -97,27 +100,23 @@ public class InventoryDataManager implements IInventoryData{
 
     public void serializeFromFile() throws IOException, ClassNotFoundException {
 
-        FileInputStream fi = new FileInputStream(new File("data/myObjects.txt"));
-        ObjectInputStream oi = new ObjectInputStream(fi);
+        ObjectMapper mapper = new ObjectMapper();
 
-        // Read objects
-        panelsList = (HashMap<String, PanelDescriptor>) oi.readObject();
+        TypeFactory factory;
+        MapType type;
 
-        System.out.println(panelsList.toString());
+        factory = TypeFactory.defaultInstance();
+        type    = factory.constructMapType(HashMap.class, String.class, PanelDescriptor.class);
 
-        oi.close();
-        fi.close();
+        panelsList = mapper.readValue(new File("data/panelsDatabase.json"), type);
+
     }
     public void serializeToFile() throws IOException, ClassNotFoundException {
 
-        FileOutputStream f = new FileOutputStream(new File("data/myObjects.txt"));
-        ObjectOutputStream o = new ObjectOutputStream(f);
+        ObjectMapper objectMapper = new ObjectMapper();
 
-        // Write objects to file
-        o.writeObject(panelsList);
+        objectMapper.writeValue(new File("data/panelsDatabase.json"), panelsList);
 
-        o.close();
-        f.close();
     }
 
 }

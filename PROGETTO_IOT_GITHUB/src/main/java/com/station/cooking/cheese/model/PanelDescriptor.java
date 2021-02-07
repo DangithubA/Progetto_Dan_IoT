@@ -18,6 +18,8 @@ public class PanelDescriptor implements Serializable {
 
     private String deviceId;
 
+    public PanelDescriptor(){}
+
     public PanelDescriptor(String deviceId, RecipeDescriptor recipe) {
         this.recipe = recipe;
         this.deviceId = deviceId;

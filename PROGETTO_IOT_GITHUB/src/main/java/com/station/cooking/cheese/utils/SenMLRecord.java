@@ -26,46 +26,20 @@ public class SenMLRecord {
 
 	private String bn;
 
-	private Number bt;
-
-	private String bu;
-
-	private Number bv, bver;
-
-	private String n, u;
+	private String u;
 
 	private Number v;
 
-	private String vs;
-
-	private Boolean vb;
-
-	private String vd;
-
-	private Number s;
-
 	private Number t;
-
-	private Number ut;
 
 	public SenMLRecord() {
 	}
 
-	public SenMLRecord(String bn, Number bt, String bu, Number bv, Number bver, String n, String u, Number v, String vs, Boolean vb, String vd, Number s, Number t, Number ut) {
+	public SenMLRecord(String bn, String bu, Number bv, Number bver, String n, String u, Number v, String vs, Boolean vb, String vd, Number s, Number t, Number ut) {
 		this.bn = bn;
-		this.bt = bt;
-		this.bu = bu;
-		this.bv = bv;
-		this.bver = bver;
-		this.n = n;
 		this.u = u;
 		this.v = v;
-		this.vs = vs;
-		this.vb = vb;
-		this.vd = vd;
-		this.s = s;
 		this.t = t;
-		this.ut = ut;
 	}
 
 	public String getBn() {
@@ -74,46 +48,6 @@ public class SenMLRecord {
 
 	public void setBn(String bn) {
 		this.bn = bn;
-	}
-
-	public Number getBt() {
-		return bt;
-	}
-
-	public void setBt(Number bt) {
-		this.bt = bt;
-	}
-
-	public String getBu() {
-		return bu;
-	}
-
-	public void setBu(String bu) {
-		this.bu = bu;
-	}
-
-	public Number getBv() {
-		return bv;
-	}
-
-	public void setBv(Number bv) {
-		this.bv = bv;
-	}
-
-	public Number getBver() {
-		return bver;
-	}
-
-	public void setBver(Number bver) {
-		this.bver = bver;
-	}
-
-	public String getN() {
-		return n;
-	}
-
-	public void setN(String n) {
-		this.n = n;
 	}
 
 	public String getU() {
@@ -132,38 +66,6 @@ public class SenMLRecord {
 		this.v = v;
 	}
 
-	public String getVs() {
-		return vs;
-	}
-
-	public void setVs(String vs) {
-		this.vs = vs;
-	}
-
-	public Boolean getVb() {
-		return vb;
-	}
-
-	public void setVb(Boolean vb) {
-		this.vb = vb;
-	}
-
-	public String getVd() {
-		return vd;
-	}
-
-	public void setVd(String vd) {
-		this.vd = vd;
-	}
-
-	public Number getS() {
-		return s;
-	}
-
-	public void setS(Number s) {
-		this.s = s;
-	}
-
 	public Number getT() {
 		return t;
 	}
@@ -172,23 +74,11 @@ public class SenMLRecord {
 		this.t = t;
 	}
 
-	public Number getUt() {
-		return ut;
-	}
-
-	public void setUt(Number ut) {
-		this.ut = ut;
-	}
-
 	@Override
 	public String toString() {
-		return "SenML [ " + (bn != null ? "bn=" + bn + "  " : "") + (bt != null ? "bt=" + bt + "  " : "")
-				+ (bu != null ? "bu=" + bu + "  " : "") + (bv != null ? "bv=" + bv + "  " : "")
-				+ (bver != null ? "bver=" + bver + "  " : "") + (n != null ? "n=" + n + "  " : "")
+		return "SenML [ " + (bn != null ? "bn=" + bn + "  " : "")
 				+ (u != null ? "u=" + u + "  " : "") + (v != null ? "v=" + v + "  " : "")
-				+ (vs != null ? "vs=" + vs + "  " : "") + (vb != null ? "vb=" + vb + "  " : "")
-				+ (vd != null ? "vd=" + vd + "  " : "") + (s != null ? "s=" + s + "  " : "")
-				+ (t != null ? "t=" + t + "  " : "") + (ut != null ? "ut=" + ut + "  " : "") + "]";
+				+ (t != null ? "t=" + t + "  " : "") + "]";
 	}
 
 }

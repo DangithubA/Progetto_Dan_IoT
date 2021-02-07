@@ -132,7 +132,17 @@ public class MqttSmartObjectProcess {
             //System.out.println(panelsList);
 
             PanelCycle panelCycle01 = new PanelCycle(panelMqttSmartObject01);
-            panelCycle01.panelCycleRun();
+
+            Thread newThread03 = new Thread(() -> {
+                try {
+                    panelCycle01.panelCycleRun();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            });
+            newThread03.start();
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -253,20 +263,15 @@ public class MqttSmartObjectProcess {
 
     public static void serializePanelsList() throws IOException {
 
+        ObjectMapper objectMapper = new ObjectMapper();
+
         HashMap<String, PanelDescriptor> panelDescriptors = new HashMap<>();
 
         panelsList.keySet().forEach(panel -> {
             panelDescriptors.put(panel, new PanelDescriptor(panelsList.get(panel).getDeviceId(), panelsList.get(panel).getRecipe()));
         });
 
-        FileOutputStream f = new FileOutputStream(new File("data/myObjects.txt"));
-        ObjectOutputStream o = new ObjectOutputStream(f);
-
-        // Write objects to file
-        o.writeObject(panelDescriptors);
-
-        o.close();
-        f.close();
+        objectMapper.writeValue(new File("data/panelsDatabase.json"), panelDescriptors);
 
     }
 

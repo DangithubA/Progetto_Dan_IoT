@@ -79,6 +79,7 @@ public class ValveResource extends SmartObjectResource<Double> {
             senMLRecord.setT(System.currentTimeMillis());
             senMLPack.add(senMLRecord);
 
+            //return Optional.of(this.objectMapper.writeValueAsString(senMLPack));
             return Optional.of(this.objectMapper.writeValueAsString(senMLPack));
 
         } catch (Exception e) {

@@ -2,8 +2,11 @@ package com.station.cooking.cheese.device;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.MapType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.station.cooking.cheese.message.EventMessage;
 import com.station.cooking.cheese.message.TelemetryMessage;
+import com.station.cooking.cheese.model.PanelDescriptor;
 import com.station.cooking.cheese.model.RecipeDescriptor;
 import com.station.cooking.cheese.process.MqttSmartObjectConfiguration;
 import com.station.cooking.cheese.resource.SmartObjectResource;
@@ -11,6 +14,7 @@ import com.station.cooking.cheese.resource.MotorMixerResource;
 import com.station.cooking.cheese.resource.ValveResource;
 import com.station.cooking.cheese.resource.TemperatureSensorResource;
 
+import jdk.internal.org.objectweb.asm.TypeReference;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -87,7 +91,21 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
         try {
 
             //recipe = om.readValue(new File("src/main/java/com.station.cooking.cheese.data/recipe.json"), RecipeDescriptor.class);
-            recipe = objectMapper.readValue(new File("data/recipe.json"), RecipeDescriptor.class);
+
+            HashMap panelDescriptors = new HashMap<>();
+            TypeFactory factory;
+            MapType type;
+
+            factory = TypeFactory.defaultInstance();
+            type    = factory.constructMapType(HashMap.class, String.class, PanelDescriptor.class);
+
+            panelDescriptors = objectMapper.readValue(new File("data/panelsDatabase.json"), type);
+
+            PanelDescriptor panelDesc = (PanelDescriptor) panelDescriptors.get(deviceId);
+
+            recipe = panelDesc.getRecipe();
+
+            //recipe = objectMapper.readValue(new File("data/recipe.json"), RecipeDescriptor.class);
             // Stampa il set di partenza della sonda prelevato dalla ricetta ricevuta
             System.out.println("Set di partenza della sonda prelevato dalla ricetta ricevuta");
             System.out.println(recipe.getTemperatures().get(0));
