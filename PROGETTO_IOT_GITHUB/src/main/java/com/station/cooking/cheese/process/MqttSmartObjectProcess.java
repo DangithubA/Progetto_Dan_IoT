@@ -41,7 +41,7 @@ public class MqttSmartObjectProcess {
 
     private static MqttSmartObjectConfiguration mqttSmartObjectConfiguration;
 
-    public static HashMap<String, PanelMqttSmartObject> panelsList = new HashMap<>(); //AGGIUNTO DA TOBI
+    public static HashMap<String, PanelMqttSmartObject> panelsList = new HashMap<>();
 
 
     public static void main(String[] args) {
@@ -126,6 +126,7 @@ public class MqttSmartObjectProcess {
                 }
 
             });
+            Thread.sleep(6000);
             newThread01.start();
 
             System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi dopo la creazione e attivazione di P01");
@@ -141,6 +142,7 @@ public class MqttSmartObjectProcess {
                 }
 
             });
+            Thread.sleep(8000);
             newThread03.start();
 
 
@@ -151,6 +153,8 @@ public class MqttSmartObjectProcess {
 
         //final int howmanypaneltocreate = 1;
         //if(howmanypaneltocreate==2) {
+
+        //RIGA PER ELIMINARE SECONDO PANEL
 
         try {
 
@@ -202,41 +206,47 @@ public class MqttSmartObjectProcess {
             }
 
         });
+        Thread.sleep(10000);
         newThread02.start();
-
-        serializePanelsList();
 
         System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi dopo la creazione e attivazione di P02");
         //System.out.println(panelsList);
 
-        //PanelCycle panelCycle01 = new PanelCycle(panelMqttSmartObject01);
+
+            PanelCycle panelCycle02 = new PanelCycle(panelMqttSmartObject02);
+
+            Thread newThread04 = new Thread(() -> {
+                try {
+                    panelCycle02.panelCycleRun();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            });
+            Thread.sleep(12000);
+            newThread04.start();
+
+
+
+        serializePanelsList();
+
+
 
         } catch (Exception e) {
-
             e.printStackTrace();
         }
 
-
-        //PanelCycle panelCycle01 = new PanelCycle(panelMqttSmartObject01);
-
-
-
-
-    }    //} else {
-
-        //System.out.println("creazione pannelli completata");
-
-
-
-
+    }
 
 
 
 //****************************************************************************************
 
-
+//  CONFIGURAZIONE E SERIALIZZAZIONE
 
 //*****************************************************************************************
+
+
 
     // CON LA LIBRERIA JAKSON SI POSSONO LEGGERE DEI FILE YAML
     private static void readConfigurationFile() throws MqttSmartObjectConfigurationException {
