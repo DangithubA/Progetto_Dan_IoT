@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 @Path("/")
-@Api("Packs resources Collector")
+@Api("Recipe Resources")
 public class RecipeResource {
 
     final protected Logger logger = LoggerFactory.getLogger(RecipeResource.class);
@@ -44,7 +44,6 @@ public class RecipeResource {
     @Path("panel")
     @Timed
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
     @ApiOperation(value="Get Panels List")
     public Response getPanelsList(@Context ContainerRequestContext req,
                                     @Context UriInfo uriInfo) {
@@ -160,7 +159,7 @@ public class RecipeResource {
                 ArrayList<String> phases = this.conf.getInventoryDataManager().getControlPanels().get(panel_id).getRecipe().getPhases();
                 ArrayList<Double> temps = this.conf.getInventoryDataManager().getControlPanels().get(panel_id).getRecipe().getTemperatures();
 
-                for(int i = 0; i < 5; i++){
+                for(int i = 0; i < temps.size(); i++){
                     if(phases.get(i).equals(phase)){
                         temps.set(i, doubleTemp);
                     }
@@ -198,7 +197,7 @@ public class RecipeResource {
                 ArrayList<String> phases = this.conf.getInventoryDataManager().getControlPanels().get(panel_id).getRecipe().getPhases();
                 ArrayList<Double> times = this.conf.getInventoryDataManager().getControlPanels().get(panel_id).getRecipe().getTimes();
 
-                for(int i = 0; i < 5; i++){
+                for(int i = 0; i < times.size(); i++){
                     if(phases.get(i).equals(phase)){
                         times.set(i, doubleTime);
                     }
@@ -233,7 +232,7 @@ public class RecipeResource {
 
                 ArrayList<String> phases = this.conf.getInventoryDataManager().getControlPanels().get(panel_id).getRecipe().getPhases();
 
-                for(int i = 0; i < 5; i++){
+                for(int i = 0; i < phases.size(); i++){
                     if(phases.get(i).equals(phase)){
                         phases.set(i, newPhase);
                     }

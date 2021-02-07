@@ -43,9 +43,10 @@ public class InventoryDataManager implements IInventoryData{
 
         if(panelsList.containsKey(panel_id)){
             panelsList.get(panel_id).setRecipe(recipeDescriptor);
+            serializeToFile();
         }
 
-        serializeToFile();
+
 
     }
 
@@ -59,9 +60,10 @@ public class InventoryDataManager implements IInventoryData{
             RecipeDescriptor recipe = panelsList.get(panel_id).getRecipe();
             recipe.setTemperatures(temps);
             panelsList.get(panel_id).setRecipe(recipe);
+            serializeToFile();
         }
 
-        serializeToFile();
+
 
     }
     @Override
@@ -73,9 +75,10 @@ public class InventoryDataManager implements IInventoryData{
             RecipeDescriptor recipe = panelsList.get(panel_id).getRecipe();
             recipe.setTimes(times);
             panelsList.get(panel_id).setRecipe(recipe);
+            serializeToFile();
         }
 
-        serializeToFile();
+
 
     }
     @Override
@@ -87,9 +90,10 @@ public class InventoryDataManager implements IInventoryData{
             RecipeDescriptor recipe = panelsList.get(panel_id).getRecipe();
             recipe.setPhases(phases);
             panelsList.get(panel_id).setRecipe(recipe);
+            serializeToFile();
         }
 
-        serializeToFile();
+
 
     }
 
