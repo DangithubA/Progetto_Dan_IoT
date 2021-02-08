@@ -142,7 +142,7 @@ public class MqttSmartObjectProcess {
                 }
 
             });
-            Thread.sleep(8000);
+            Thread.sleep(2000);
             newThread03.start();
 
 
@@ -156,6 +156,7 @@ public class MqttSmartObjectProcess {
 
         //RIGA PER ELIMINARE SECONDO PANEL
 
+        //  /**  // ESCLUSIONE SECONDO PANEL
         try {
 
         //Generate a random com.station.cooking.cheese.device ID
@@ -206,7 +207,7 @@ public class MqttSmartObjectProcess {
             }
 
         });
-        Thread.sleep(10000);
+        Thread.sleep(2000);
         newThread02.start();
 
         System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi dopo la creazione e attivazione di P02");
@@ -223,12 +224,12 @@ public class MqttSmartObjectProcess {
                 }
 
             });
-            Thread.sleep(12000);
+            Thread.sleep(2000);
             newThread04.start();
 
 
 
-        serializePanelsList();
+        // serializePanelsList();
 
 
 
@@ -236,6 +237,7 @@ public class MqttSmartObjectProcess {
             e.printStackTrace();
         }
 
+         // */    // ESCLUSIONE SECONDO PANEL
     }
 
 
