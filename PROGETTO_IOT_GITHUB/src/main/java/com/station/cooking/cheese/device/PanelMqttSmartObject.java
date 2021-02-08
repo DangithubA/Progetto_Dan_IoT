@@ -73,6 +73,10 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
         this.messageCount = 0;
     }
 
+    public String getBaseTopic() {
+        return baseTopic;
+    }
+
     @Override
     public void init(MqttSmartObjectConfiguration smartObjectConfiguration,
                      IMqttClient mqttClient,
@@ -203,7 +207,7 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
                     }
                 });
 
-                publishEventData(String.format("%s/event", baseTopic), eventMessage);
+                publishEventData(String.format("%s/info", baseTopic), eventMessage);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -249,7 +253,7 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
     //private void publishTelemetryData(String topic, TelemetryMessage telemetryMessage) throws MqttException, JsonProcessingException { // prende topic dove pubblicare
 
 
-    /*public void publishAlarmEvent(String topic, String eventString) throws MqttException, JsonProcessingException{
+    public void publishAlarmEvent(String topic, String eventString) throws MqttException, JsonProcessingException{
         logger.info("Publishing EVENT-ALARM to Topic: {}", topic);     // per configurare i messaggi vedi telemetryMessagge
 
         //if (mqttClient.isConnected() && telemetryMessage != null && topic != null) {
@@ -268,7 +272,6 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
                 senMLRecord.setT(System.currentTimeMillis());
                 senMLPack.add(senMLRecord);
 
-                //return Optional.of(this.objectMapper.writeValueAsString(senMLPack));
                 MqttMessage msg = new MqttMessage(Optional.of(mapper.writeValueAsString(senMLPack)).toString().getBytes());
 
                 msg.setQos(this.smartObjectConfiguration.getMqttOutgoingClientQoS());
@@ -277,7 +280,7 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
 
                 this.messageCount++;
 
-                logger.info("Data Correctly Published to topic: {}", topic);
+                logger.info("Data Correctly Published to topic: {} Message: {}", topic, msg);
 
 
             } catch (Exception e) {
@@ -288,7 +291,7 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
             logger.error("Error: Topic or Msg = Null or MQTT Client is not Connected !");
         }
 
-    }*/
+    }
                                                                                                 // oggetto telemetrymessagge non di mqtt ma definito e strutturato per
     private void publishTelemetryData(String topic, SmartObjectResource smartObjectResource) throws MqttException, JsonProcessingException {
         //logger.info("Publishing to Topic: {} Smart Object: {}", topic, telemetryMessage);
