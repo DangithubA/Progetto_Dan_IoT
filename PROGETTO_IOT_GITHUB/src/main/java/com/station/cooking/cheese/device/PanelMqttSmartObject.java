@@ -308,15 +308,6 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
         //if (mqttClient.isConnected() && telemetryMessage != null && topic != null) {
         if (mqttClient.isConnected() && smartObjectResource.getJsonSenmlResponse().toString() != null && topic != null) {
 
-            //String msgString = this.objectMapper.writeValueAsString(telemetryMessage);
-
-            /*String messaggio = smartObjectResource.getJsonSenmlResponse().toString();
-
-            Gson gson = new Gson();
-
-            messaggio = gson.toJson(messaggio);
-            messaggio.*/
-
             MqttMessage msg = new MqttMessage(smartObjectResource.getJsonSenmlResponse().toString().getBytes());
             //Set com.station.cooking.cheese.message QoS
             msg.setQos(this.smartObjectConfiguration.getMqttOutgoingClientQoS());
