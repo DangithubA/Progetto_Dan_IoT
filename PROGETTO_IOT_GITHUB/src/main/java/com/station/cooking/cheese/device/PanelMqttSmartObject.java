@@ -41,7 +41,7 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
 
     private final ObjectMapper objectMapper;
 
-    private RecipeDescriptor recipe;   // DAN HO TOLTO STATIC
+    private RecipeDescriptor recipe;   // DAN TOLTO STATIC
 
     private Semaphore semaphore;
 
@@ -149,7 +149,7 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
                 //
                 //});
 
-                resourceMap.entrySet()  // lista delle chiavi della mappa           // DAN JAVA STREAM FLUSSI OTTIMIZZATI PER V^NAVIGARE LE COLLECTION
+                resourceMap.entrySet()  // lista delle chiavi della mappa           // DAN JAVA STREAM FLUSSI OTTIMIZZATI PER NAVIGARE LE COLLECTION
                         .forEach(mapResourceEntry -> {
                             try {
                                 if(mapResourceEntry != null){
