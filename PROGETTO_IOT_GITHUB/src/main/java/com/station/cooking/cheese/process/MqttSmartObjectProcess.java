@@ -157,7 +157,7 @@ public class MqttSmartObjectProcess {
         //RIGA PER ELIMINARE SECONDO PANEL
 
         //  /**  // ESCLUSIONE SECONDO PANEL
-        /*try {
+        try {
 
         //Generate a random com.station.cooking.cheese.device ID
         //String deviceId01 = UUID.randomUUID().toString(); DAN MODIFICATO PER METTERE ID FISSO
@@ -229,7 +229,7 @@ public class MqttSmartObjectProcess {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
 
          // */    // ESCLUSIONE SECONDO PANEL
     }
