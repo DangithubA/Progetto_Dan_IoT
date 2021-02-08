@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Optional;
 
 /**
- * @author: Daniele Barbieri Powered by Marco Picone
+ * @author: Daniele Barbieri
  * @date: 30/01/2021
  * @project: Progetto_Dan_IoT
  */

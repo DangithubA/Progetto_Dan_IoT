@@ -26,6 +26,13 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * @author: Daniele Barbieri
+ * @date: 30/01/2021
+ * @project: Progetto_Dan_IoT
+ */
+
+
 @Path("/")
 @Api("Recipe Resources")
 public class RecipeResource {
@@ -58,6 +65,7 @@ public class RecipeResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),"Internal Server Error !")).build();
         }
     }
+
     @GET
     @Path("panel/{panel_id}/recipe")
     @Timed
@@ -84,6 +92,7 @@ public class RecipeResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),"Internal Server Error !")).build();
         }
     }
+
     @POST
     @Path("panel/{panel_id}/recipe")
     @Timed
@@ -113,6 +122,7 @@ public class RecipeResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),"Internal Server Error !")).build();
         }
     }
+
     @DELETE
     @Path("panel/{panel_id}/recipe")
     @Timed
@@ -139,6 +149,7 @@ public class RecipeResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),"Internal Server Error !")).build();
         }
     }
+
     @PUT
     @Path("panel/{panel_id}/recipe/{phase}/temperature")
     @Timed
@@ -177,6 +188,7 @@ public class RecipeResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),"Internal Server Error !")).build();
         }
     }
+
     @PUT
     @Path("panel/{panel_id}/recipe/{phase}/time")
     @Timed
@@ -215,6 +227,7 @@ public class RecipeResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),"Internal Server Error !")).build();
         }
     }
+
     @PUT
     @Path("panel/{panel_id}/recipe/{phase}")
     @Timed

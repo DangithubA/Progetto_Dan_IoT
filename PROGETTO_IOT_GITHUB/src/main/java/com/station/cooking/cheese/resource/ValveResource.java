@@ -11,7 +11,7 @@ import java.util.Random;
 import java.util.UUID;
 
 /**
- * @author: Daniele Barbieri Powered by Marco Picone
+ * @author: Daniele Barbieri
  * @date: 30/01/2021
  * @project: Progetto_Dan_IoT
  */
@@ -20,7 +20,7 @@ public class ValveResource extends SmartObjectResource<Double> {
 
     private static final Logger logger = LoggerFactory.getLogger(ValveResource.class);
 
-    private static String UNIT_VALUE = "%";
+    private static String UNIT_VALUE = "percentage";
 
     private static String TYPE_VALUE = "iot:actuator:valve";
 
@@ -79,7 +79,6 @@ public class ValveResource extends SmartObjectResource<Double> {
             senMLRecord.setT(System.currentTimeMillis());
             senMLPack.add(senMLRecord);
 
-            //return Optional.of(this.objectMapper.writeValueAsString(senMLPack));
             return Optional.of(this.objectMapper.writeValueAsString(senMLPack));
 
         } catch (Exception e) {

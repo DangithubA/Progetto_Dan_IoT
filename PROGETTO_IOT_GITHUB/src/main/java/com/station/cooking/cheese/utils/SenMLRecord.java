@@ -23,7 +23,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  |   Update Time | ut   | Number  |
  +---------------+------+---------+
  */
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
+
 public class SenMLRecord {
 
 	private String bn;

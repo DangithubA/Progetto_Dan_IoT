@@ -23,7 +23,7 @@ import java.io.*;
 import java.util.HashMap;
 
 /**
- * @author: Daniele Barbieri Powered by Marco Picone
+ * @author: Daniele Barbieri
  * @date: 30/01/2021
  * @project: Progetto_Dan_IoT
  */
@@ -45,21 +45,6 @@ public class MqttSmartObjectProcess {
 
 
     public static void main(String[] args) {
-/**
- // INSERITO PER CARICARE LA RICETTA POI SPOSTATO SU PanelMqttSmartObject
- ObjectMapper om = new ObjectMapper();
-
- try {
-
- recipe = om.readValue(new File("data/recipe.json"), RecipeDescriptor.class);
- // Stampa il set di partenza della sonda prelevato dalla ricetta ricevuta
- System.out.println("Set di partenza della sonda prelevato dalla ricetta ricevuta");
- System.out.println(recipe.getTemperatures().get(0));
-
- } catch (IOException e) {
- e.printStackTrace();
- }
- */
 
         try {
 
@@ -73,9 +58,8 @@ public class MqttSmartObjectProcess {
         }
     }
 
-    // CREATE THE PANEL CONTROLL P01
+    // CREATE THE PANEL CONTROLL P01 P02
     private static void startSmartObject() {
-
 
         try {
 
@@ -115,6 +99,7 @@ public class MqttSmartObjectProcess {
             //}
             //);
             //Thread.sleep(4000);
+
             panelsList.put(deviceId01, panelMqttSmartObject01);
 
 
@@ -130,7 +115,6 @@ public class MqttSmartObjectProcess {
             newThread01.start();
 
             System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi dopo la creazione e attivazione di P01");
-            //System.out.println(panelsList);
 
             PanelCycle panelCycle01 = new PanelCycle(panelMqttSmartObject01);
 
@@ -149,7 +133,8 @@ public class MqttSmartObjectProcess {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    //}
+
+        //}
 
         //final int howmanypaneltocreate = 1;
         //if(howmanypaneltocreate==2) {
@@ -157,6 +142,7 @@ public class MqttSmartObjectProcess {
         //RIGA PER ELIMINARE SECONDO PANEL
 
         //  /**  // ESCLUSIONE SECONDO PANEL
+
         try {
 
         //Generate a random com.station.cooking.cheese.device ID
@@ -195,6 +181,7 @@ public class MqttSmartObjectProcess {
         //}
         //);
         //Thread.sleep(4000);
+
         panelsList.put(deviceId02, panelMqttSmartObject02);
 
 
@@ -224,7 +211,6 @@ public class MqttSmartObjectProcess {
         Thread.sleep(2000);
         newThread04.start();
         // serializePanelsList();
-
 
 
         } catch (Exception e) {
@@ -259,7 +245,7 @@ public class MqttSmartObjectProcess {
 
             logger.info("{} MQTT Configuration Loaded ! Conf: {}", TAG, mqttSmartObjectConfiguration);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             String errorMessage = String.format("ERROR LOADING CONFIGURATION FILE ! Error: %s", e.getLocalizedMessage());
             logger.error("{} {}", TAG, errorMessage);

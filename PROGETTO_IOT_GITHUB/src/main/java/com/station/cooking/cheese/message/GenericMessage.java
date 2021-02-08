@@ -3,10 +3,11 @@ package com.station.cooking.cheese.message;
 import java.util.Map;
 
 /**
- * @author: Daniele Barbieri Powered by Marco Picone
+ * @author: Daniele Barbieri
  * @date: 30/01/2021
  * @project: Progetto_Dan_IoT
  */
+
 public abstract class GenericMessage {
 
     private String type;

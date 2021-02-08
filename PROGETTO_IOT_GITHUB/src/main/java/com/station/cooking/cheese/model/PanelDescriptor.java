@@ -12,6 +12,14 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.concurrent.Semaphore;
 
+
+/**
+ * @author: Daniele Barbieri
+ * @date: 30/01/2021
+ * @project: Progetto_Dan_IoT
+ */
+
+
 public class PanelDescriptor implements Serializable {
 
     private RecipeDescriptor recipe;

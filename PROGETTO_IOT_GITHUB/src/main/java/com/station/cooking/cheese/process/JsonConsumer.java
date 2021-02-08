@@ -19,10 +19,11 @@ import java.util.UUID;
  * MQTT Consumer using the library Eclipse Paho
  * and consuming JSON messages following a structured message description
  *
- * @author Marco Picone, Ph.D. - picone.m@gmail.com
- * @project mqtt-playground
- * @created 14/10/2020 - 09:19
+ * @author: Daniele Barbieri
+ * @date: 30/01/2021
+ * @project: Progetto_Dan_IoT
  */
+
 public class JsonConsumer {
 
     private final static Logger logger = LoggerFactory.getLogger(JsonConsumer.class);

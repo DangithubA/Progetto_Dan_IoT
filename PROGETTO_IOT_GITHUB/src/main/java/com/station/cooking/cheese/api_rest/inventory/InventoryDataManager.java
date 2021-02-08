@@ -16,6 +16,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
+/**
+ * @author: Daniele Barbieri
+ * @date: 30/01/2021
+ * @project: Progetto_Dan_IoT
+ */
+
+
 public class InventoryDataManager implements IInventoryData{
 
 
@@ -30,7 +37,7 @@ public class InventoryDataManager implements IInventoryData{
 
         serializeFromFile();
 
-        System.out.println(String.format("%s", panelsList.keySet()));
+        //System.out.println(String.format("%s", panelsList.keySet()));
 
         return panelsList;
 
@@ -128,7 +135,7 @@ public class InventoryDataManager implements IInventoryData{
 
     public void serializeFromFile() throws IOException, ClassNotFoundException {
 
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper objectmapper = new ObjectMapper();
 
         TypeFactory factory;
         MapType type;
@@ -136,7 +143,7 @@ public class InventoryDataManager implements IInventoryData{
         factory = TypeFactory.defaultInstance();
         type    = factory.constructMapType(HashMap.class, String.class, PanelDescriptor.class);
 
-        panelsList = mapper.readValue(new File("data/panelsDatabase.json"), type);
+        panelsList = objectmapper.readValue(new File("data/panelsDatabase.json"), type);
 
     }
     public void serializeToFile() throws IOException, ClassNotFoundException {

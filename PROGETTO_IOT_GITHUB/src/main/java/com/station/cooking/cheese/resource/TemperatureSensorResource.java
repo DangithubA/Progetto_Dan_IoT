@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * @author: Daniele Barbieri Powered by Marco Picone
+ * @author: Daniele Barbieri
  * @date: 30/01/2021
  * @project: Progetto_Dan_IoT
  */
@@ -46,13 +46,8 @@ public class TemperatureSensorResource extends SmartObjectResource<Double> {
     @Override
     public void refreshValue() {
         this.value = this.value + 0.5;
-        //this.startTemperature =this.startTemperature + 0.5;
-        //this.value = this.value + 0.5;
     }
-    //public Double refreshValue(Double increase) {
-    //    this.value = this.value + increase;
-    //    return this.value;
-    //}  // MODIFICATO AGGIUNTO INCREASE + RETURN VALUE
+
 
     @Override
     public void setValue(Double value) {
@@ -63,6 +58,7 @@ public class TemperatureSensorResource extends SmartObjectResource<Double> {
      * Create the SenML Response with the updated value and the resource information
      * @return
      */
+
     @Override
     public Optional<String> getJsonSenmlResponse() {
 

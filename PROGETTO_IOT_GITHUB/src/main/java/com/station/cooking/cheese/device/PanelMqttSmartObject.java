@@ -34,7 +34,7 @@ import java.util.concurrent.Semaphore;
 import java.io.Serializable;
 
 /**
- * @author: Daniele Barbieri Powered by Marco Picone
+ * @author: Daniele Barbieri
  * @date: 30/01/2021
  * @project: Progetto_Dan_IoT
  */
@@ -45,7 +45,7 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
 
     private final ObjectMapper objectMapper;
 
-    private RecipeDescriptor recipe;   // DAN TOLTO STATIC
+    private RecipeDescriptor recipe;
 
     private Semaphore semaphore;
 
@@ -94,7 +94,7 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
         this.mqttClient = mqttClient;
         this.deviceId = deviceId;
         //this.resourceMap = resourceMap;
-        this.resourceMap = new HashMap<String, SmartObjectResource<?>>(); // NEW DAN
+        this.resourceMap = new HashMap<String, SmartObjectResource<?>>();
         this.baseTopic = baseTopic;
 
         this.semaphore = new Semaphore(0);
@@ -121,20 +121,13 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
 
             //recipe = objectMapper.readValue(new File("data/recipe.json"), RecipeDescriptor.class);
             // Stampa il set di partenza della sonda prelevato dalla ricetta ricevuta
-            System.out.println("Set di partenza della sonda prelevato dalla ricetta ricevuta");
-            System.out.println(recipe.getTemperatures().get(0));
+            //System.out.println("Set di partenza della sonda prelevato dalla ricetta ricevuta");
+            //System.out.println(recipe.getTemperatures().get(0));
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        //new HashMap<String, SmartObjectResource<?>>(){
-        //    {
-        //        put("temperature", new TemperatureSensorResource(recipe));
-        //        put("Mixer", new MotorMixerResource());
-        //        put("SteamValve", new ValveResource());
-
-        //    }
         this.resourceMap.put("Temperature", new TemperatureSensorResource(recipe));
         this.resourceMap.put("Mixer", new MotorMixerResource());
         this.resourceMap.put("SteamValve", new ValveResource());
@@ -168,14 +161,9 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
                             try {
                                 if(mapResourceEntry != null){
 
-                                    //Refresh Smart Object value
                                     SmartObjectResource smartObjectResource = mapResourceEntry.getValue(); //Queste due righe sotto formula abbreviata
-                                    //smartObjectResource.refreshValue(0.5);
-                                    //smartObjectResource.refreshValue();
-                                    //mapResourceEntry.getValue().refreshValue(0.5); // SOSPESO DA DAN IMPLEMENTARE REFRESH HO SCRITTO (INCREASE)
                                     publishTelemetryData(String.format("%s/%s", baseTopic, mapResourceEntry.getKey()), //METODO PUBLISH RIGA181
                                                             smartObjectResource);
-                                            //new TelemetryMessage(System.currentTimeMillis(), mapResourceEntry.getValue().getType(), mapResourceEntry.getValue()));
                                 }
                             } catch (MqttException | JsonProcessingException e) {
                                 logger.error("Error Publishing Message ! Error: {}", e.getLocalizedMessage());
@@ -258,9 +246,6 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
 
     }
 
-    //private void publishTelemetryData(String topic, TelemetryMessage telemetryMessage) throws MqttException, JsonProcessingException { // prende topic dove pubblicare
-
-
     public void publishAlarmEvent(String topic, String eventString) throws MqttException, JsonProcessingException{
         logger.info("Publishing EVENT-ALARM to Topic: {}", topic);     // per configurare i messaggi vedi telemetryMessagge
 
@@ -303,12 +288,22 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
                                                                                                 // oggetto telemetrymessagge non di mqtt ma definito e strutturato per
     private void publishTelemetryData(String topic, SmartObjectResource smartObjectResource) throws MqttException, JsonProcessingException {
         //logger.info("Publishing to Topic: {} Smart Object: {}", topic, telemetryMessage);
-        logger.info("Publishing to Topic: {} Smart Object: {}", topic, smartObjectResource.getJsonSenmlResponse().toString());     // per configurare i messaggi vedi telemetryMessagge
+
+        Optional<String> senMLPayload = smartObjectResource.getJsonSenmlResponse();          // DAN ****************
+
+        //logger.info("Publishing to Topic: {} Smart Object: {}", topic, smartObjectResource.getJsonSenmlResponse().toString());     // per configurare i messaggi vedi telemetryMessagge
+        logger.info("Publishing to Topic: {} Smart Object: {}", topic, senMLPayload.get()); // DAN ****************
+
 
         //if (mqttClient.isConnected() && telemetryMessage != null && topic != null) {
-        if (mqttClient.isConnected() && smartObjectResource.getJsonSenmlResponse().toString() != null && topic != null) {
+        //if (mqttClient.isConnected() && smartObjectResource.getJsonSenmlResponse().toString() != null && topic != null) {
+        if (mqttClient.isConnected() && senMLPayload.isPresent() && topic != null) {         // DAN ****************
 
-            MqttMessage msg = new MqttMessage(smartObjectResource.getJsonSenmlResponse().toString().getBytes());
+
+            //MqttMessage msg = new MqttMessage(smartObjectResource.getJsonSenmlResponse().toString().getBytes());
+            MqttMessage msg = new MqttMessage(senMLPayload.get().getBytes());                // DAN ****************
+
+
             //Set com.station.cooking.cheese.message QoS
             msg.setQos(this.smartObjectConfiguration.getMqttOutgoingClientQoS());
 
@@ -317,8 +312,8 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
             this.messageCount++;
 
             logger.info("Data Correctly Published to topic: {}", topic);
-        }
-        else{
+
+        } else{
             logger.error("Error: Topic or Msg = Null or MQTT Client is not Connected !");
         }
 
@@ -340,8 +335,8 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
             mqttClient.publish(topic,msg);
 
             logger.info("Data Correctly Published to topic: {}", topic);
-        }
-        else{
+
+        } else{
             logger.error("Error: Topic or Msg = Null or MQTT Client is not Connected !");
         }
 

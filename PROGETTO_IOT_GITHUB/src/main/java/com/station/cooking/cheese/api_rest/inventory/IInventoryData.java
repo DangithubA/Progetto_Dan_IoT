@@ -11,6 +11,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * @author: Daniele Barbieri
+ * @date: 30/01/2021
+ * @project: Progetto_Dan_IoT
+ */
+
+
 public interface IInventoryData {
 
     public HashMap<String, PanelDescriptor> getControlPanels() throws IInventoryDataException, IOException, ClassNotFoundException;

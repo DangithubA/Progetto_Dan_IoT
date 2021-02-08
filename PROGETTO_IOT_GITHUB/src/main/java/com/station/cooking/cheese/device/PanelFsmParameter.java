@@ -16,6 +16,12 @@ import com.station.cooking.cheese.resource.TemperatureSensorResource;
 
 import static java.lang.Thread.sleep;
 
+/**
+ * @author: Daniele Barbieri
+ * @date: 30/01/2021
+ * @project: Progetto_Dan_IoT
+ */
+
 
 public class PanelFsmParameter {
 
@@ -52,62 +58,62 @@ public class PanelFsmParameter {
 
     public static void main(String[] args) throws InterruptedException {
 
-        init();
-        System.out.println(recipe.getTemperatures().get(0));
-        phases.addAll(recipe.getPhases());
-        temperatures.addAll(recipe.getTemperatures());
-        times.addAll(recipe.getTimes());
+            init();
+            System.out.println(recipe.getTemperatures().get(0));
+            phases.addAll(recipe.getPhases());
+            temperatures.addAll(recipe.getTemperatures());
+            times.addAll(recipe.getTimes());
 
-        TemperatureSensorResource current_temperature_phase = new TemperatureSensorResource(recipe);
-        ValveResource valve_steam = new ValveResource();
-        MotorMixerResource motor_mixer = new MotorMixerResource();
+            TemperatureSensorResource current_temperature_phase = new TemperatureSensorResource(recipe);
+            ValveResource valve_steam = new ValveResource();
+            MotorMixerResource motor_mixer = new MotorMixerResource();
 
-        for (int i = 0; i < phases.size(); i++) {
-            System.out.println("Quante fasi =" + phases.size());
-            System.out.println("Fase in corso =" + phases.get(i));
+            for (int i = 0; i < phases.size(); i++) {
+                System.out.println("Quante fasi =" + phases.size());
+                System.out.println("Fase in corso =" + phases.get(i));
 
-            double time_phase_set = times.get(i);
-            int time_phase_real = 0;
+                double time_phase_set = times.get(i);
+                int time_phase_real = 0;
 
-                if (i == 0) {
-                    current_temperature_phase.setValue(temperatures.get(i) - 5.0);
+                    if (i == 0) {
+                        current_temperature_phase.setValue(temperatures.get(i) - 5.0);
 
-                } else {
+                    } else {
 
-                    current_temperature_phase.setValue(temperatures.get(i) - 10.0);
+                        current_temperature_phase.setValue(temperatures.get(i) - 10.0);
 
-                }
-                System.out.println("Temperatura di partenza =" + current_temperature_phase.getValue());
-
-                    // second step phase temperature remains constant mixer ON Valve CLOSE
-                    while (current_temperature_phase.getValue() <= temperatures.get(i) || time_phase_real < time_phase_set) {
-
-                        if (current_temperature_phase.getValue() <= temperatures.get(i)) {
-                            // first step phase temperature raises mixer ON Valve OPEN
-                            sleep(1000);
-                            current_temperature_phase.refreshValue();
-                            valve_steam.setValue(1.0); // era true ultimo tentativo
-                            motor_mixer.setValue(1.0); // era true ultimo tentativo
-
-                            System.out.println("Temperatura aggiornata =" + current_temperature_phase.getValue());
-                            System.out.println("Motore mixer =" + motor_mixer.getValue());
-                            System.out.println("Valvola vapore =" + valve_steam.getValue());
-
-                        } else {
-                            // second step phase temperature remains constant mixer ON Valve CLOSE
-                            sleep(1000);
-                            time_phase_real += 1;
-                            valve_steam.setValue(0.0);// era false ultimo tentativo
-                            motor_mixer.setValue(1.0);// era true ultimo tentativo
-
-                            System.out.println("Temperatura aggiornata =" + current_temperature_phase.getValue());
-                            System.out.println("Motore mixer =" + motor_mixer.getValue());
-                            System.out.println("Valvola vapore =" + valve_steam.getValue());
-                            System.out.println("Tempo fase =" + time_phase_real);
-                        }
                     }
-                }
-        }
+                    System.out.println("Temperatura di partenza =" + current_temperature_phase.getValue());
+
+                        // second step phase temperature remains constant mixer ON Valve CLOSE
+                        while (current_temperature_phase.getValue() <= temperatures.get(i) || time_phase_real < time_phase_set) {
+
+                            if (current_temperature_phase.getValue() <= temperatures.get(i)) {
+                                // first step phase temperature raises mixer ON Valve OPEN
+                                sleep(1000);
+                                current_temperature_phase.refreshValue();
+                                valve_steam.setValue(1.0); // era true ultimo tentativo
+                                motor_mixer.setValue(1.0); // era true ultimo tentativo
+
+                                System.out.println("Temperatura aggiornata =" + current_temperature_phase.getValue());
+                                System.out.println("Motore mixer =" + motor_mixer.getValue());
+                                System.out.println("Valvola vapore =" + valve_steam.getValue());
+
+                            } else {
+                                // second step phase temperature remains constant mixer ON Valve CLOSE
+                                sleep(1000);
+                                time_phase_real += 1;
+                                valve_steam.setValue(0.0);// era false ultimo tentativo
+                                motor_mixer.setValue(1.0);// era true ultimo tentativo
+
+                                System.out.println("Temperatura aggiornata =" + current_temperature_phase.getValue());
+                                System.out.println("Motore mixer =" + motor_mixer.getValue());
+                                System.out.println("Valvola vapore =" + valve_steam.getValue());
+                                System.out.println("Tempo fase =" + time_phase_real);
+                            }
+                        }
+            }
+    }
 }
 
 

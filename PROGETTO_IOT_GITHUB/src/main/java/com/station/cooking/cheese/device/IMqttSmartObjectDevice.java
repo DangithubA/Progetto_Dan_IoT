@@ -4,7 +4,7 @@ import com.station.cooking.cheese.process.MqttSmartObjectConfiguration;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 
 /**
- * @author: Daniele Barbieri Powered by Marco Picone
+ * @author: Daniele Barbieri
  * @date: 30/01/2021
  * @project: Progetto_Dan_IoT
  */

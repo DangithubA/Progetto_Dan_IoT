@@ -15,6 +15,13 @@ import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 import java.util.EnumSet;
 
+/**
+ * @author: Daniele Barbieri
+ * @date: 30/01/2021
+ * @project: Progetto_Dan_IoT
+ */
+
+
 public class ApiAppService extends Application<ApiAppConfig> {
 
     private static final Logger logger = LoggerFactory.getLogger(ApiAppService.class);

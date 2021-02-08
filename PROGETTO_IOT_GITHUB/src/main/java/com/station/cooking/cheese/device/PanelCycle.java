@@ -25,6 +25,11 @@ import javax.imageio.stream.ImageInputStream;
 import static java.lang.Thread.sleep;
 
 
+/**
+ * @author: Daniele Barbieri
+ * @date: 30/01/2021
+ * @project: Progetto_Dan_IoT
+ */
 
 
 
@@ -66,40 +71,6 @@ public class PanelCycle {
 
     }
 
-        /**
-
-        public static void init() {
-
-            // INSERITO PER CARICARE LA RICETTA
-
-            try {
-
-                //recipe = om.readValue(new File("src/main/java/com.station.cooking.cheese.data/recipe.json"), RecipeDescriptor.class);
-                recipe = objectMapper.readValue(new File("data/recipe.json"), RecipeDescriptor.class);
-                // Stampa il set di partenza della sonda prelevato dalla ricetta ricevuta
-                //System.out.println("Set di partenza della sonda prelevato dalla ricetta ricevuta");
-                //System.out.println(recipe.getTemperatures().get(0));
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        public static void main(String[] args) throws InterruptedException {
-
-        init();
-        System.out.println(recipe.getTemperatures().get(0));
-        phases.addAll(recipe.getPhases());
-        temperatures.addAll(recipe.getTemperatures());
-        times.addAll(recipe.getTimes());
-
-        TemperatureSensorResource current_temperature_phase = new TemperatureSensorResource(recipe);
-        ValveResource valve_steam = new ValveResource();
-        MotorMixerResource motor_mixer = new MotorMixerResource();
-
-*/
-
 
 
     public void simulateWrongTemperature(){
@@ -120,20 +91,13 @@ public class PanelCycle {
         threadModifyTemp.start();
 
     }
-    public void panelCycleRun() throws InterruptedException, MqttException, JsonProcessingException {
 
+    public void panelCycleRun() throws InterruptedException, MqttException, JsonProcessingException {
 
         final double[] motor_percentage_work = {0.0};
         final double[] valve_percentage_work = {0.0};
         double time_phase_set = 0.0;
         double time_phase_real = 0.0;
-
-        //panelMqttSmartObject.getResourceMap().get(TemperatureSensorResource.getValue());   // ESEMPIO
-        //panelMqttSmartObject.getResourceMap().entrySet().forEach(mapResourceEntry->{       // ESEMPIO
-        //           SmartObjectResource smartObjectResource = mapResourceEntry.getValue();  // ESEMPIO
-        //            smartObjectResource.refreshValue();                                    // ESEMPIO
-        //        }
-        //        );
 
 
         for (int i = 0; i < phases.size(); i++) {
@@ -158,9 +122,8 @@ public class PanelCycle {
                                 //System.out.println("STAMPA TEMPERATURA");                       //
                                 //System.out.println(mapResourceEntry.getValue().getValue());     //
 
-                            }// else {
-                            //   NON OBBLIGATORIO
-                            //}
+                            }
+
                 });
 
             } else {
@@ -174,6 +137,7 @@ public class PanelCycle {
                     }
                 });
             }
+
             while (current_temperature_phase[0] < temperatures.get(i) || time_phase_real <= time_phase_set) {
                 System.out.println("DEBUG DEVICE ID = "+panelMqttSmartObject.getDeviceId());
                 System.out.println("DEBUG");
@@ -218,7 +182,7 @@ public class PanelCycle {
                         panelMqttSmartObject.publishAlarmEvent(String.format("%s/event", panelMqttSmartObject.getBaseTopic()), "TEMPERATURE_ALARM");
                         Thread.sleep(900);
 
-                    }else{
+                    } else {
                         // second step phase temperature remains constant & mixer is ON & Valve is CLOSE
                         sleep(910);
                         panelMqttSmartObject.getResourceMap().entrySet().forEach(mapResourceEntry -> {
