@@ -99,7 +99,31 @@ public class InventoryDataManager implements IInventoryData{
 
     @Override
     public void deleteRecipe(String panel_id) throws IInventoryDataException, IOException, ClassNotFoundException {
-        panelsList.get(panel_id).setRecipe(null);
+        RecipeDescriptor recipeDescriptor = new RecipeDescriptor();
+        ArrayList<String> phases = new ArrayList<String>();
+        phases.add("null");
+        phases.add("null");
+        phases.add("null");
+        phases.add("null");
+        phases.add("null");
+        ArrayList<Double> times = new ArrayList<Double>();
+        times.add(0.0);
+        times.add(0.0);
+        times.add(0.0);
+        times.add(0.0);
+        times.add(0.0);
+        ArrayList<Double> temps = new ArrayList<Double>();
+        temps.add(0.0);
+        temps.add(0.0);
+        temps.add(0.0);
+        temps.add(0.0);
+        temps.add(0.0);
+        recipeDescriptor.setPhases(phases);
+        recipeDescriptor.setTimes(times);
+        recipeDescriptor.setTemperatures(temps);
+        recipeDescriptor.setName("null");
+        panelsList.get(panel_id).setRecipe(recipeDescriptor);
+
     }
 
     public void serializeFromFile() throws IOException, ClassNotFoundException {

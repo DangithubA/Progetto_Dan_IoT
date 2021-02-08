@@ -129,8 +129,7 @@ public class RecipeResource {
 
                 this.conf.getInventoryDataManager().deleteRecipe(panel_id);
 
-                return Response.created(new URI(String.format("%s/",uriInfo.getAbsolutePath()))).build();
-
+                return Response.noContent().build();
             }else{
                 return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(),"Panel Not Found !")).build();
             }
@@ -167,7 +166,7 @@ public class RecipeResource {
 
                 this.conf.getInventoryDataManager().updateTemp(temps, panel_id);
 
-                return Response.created(new URI(String.format("%s",uriInfo.getAbsolutePath()))).build();
+                return Response.noContent().build();
 
             }else{
                 return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(),"Panel Not Found !")).build();
@@ -205,7 +204,7 @@ public class RecipeResource {
 
                 this.conf.getInventoryDataManager().updateTime(times, panel_id);
 
-                return Response.created(new URI(String.format("%s",uriInfo.getAbsolutePath()))).build();
+                return Response.noContent().build();
 
             }else{
                 return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(),"Panel Not Found !")).build();
@@ -240,7 +239,7 @@ public class RecipeResource {
 
                 this.conf.getInventoryDataManager().updatePhase(phases, panel_id);
 
-                return Response.created(new URI(String.format("%s",uriInfo.getAbsolutePath()))).build();
+                return Response.noContent().build();
 
             }else{
                 return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(),"Panel Not Found !")).build();

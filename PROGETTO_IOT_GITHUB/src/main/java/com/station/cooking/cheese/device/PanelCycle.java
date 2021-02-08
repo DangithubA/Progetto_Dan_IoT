@@ -246,6 +246,8 @@ public class PanelCycle {
 
         }
 
+        panelMqttSmartObject.stop();
+
     }
 }
 

@@ -60,6 +60,10 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
 
     private static final String INFO_HEARTBEAT_EVENT_TYPE = "INFO_HEARTBEAT_EVENT";
 
+    private Timer eventTimer;
+
+    private Timer telemetryTimer;
+
     private String baseTopic;
 
     private int messageCount;
@@ -231,10 +235,10 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
                 logger.info("Waiting {} ms before starting ...", this.smartObjectConfiguration.getStartUpDelayMs()) ;
                 Thread.sleep(this.smartObjectConfiguration.getStartUpDelayMs());
 
-                Timer eventTimer = new Timer();
+                eventTimer = new Timer();
                 eventTimer.schedule(new EventTask(), 0, this.smartObjectConfiguration.getEventUpdateTimeMs()); //getEventUpdateTimeMs è il perido specificato della configurazione
 
-                Timer telemetryTimer = new Timer();
+                telemetryTimer = new Timer();
                 telemetryTimer.schedule(new TelemetryTask(), 2000, this.smartObjectConfiguration.getTelemetryUpdateTimeMs());
 
                 semaphore.acquire(2); // la classe deve rimanere attiva sino a che i due timer non hanno finito
@@ -247,6 +251,10 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
 
     @Override
     public void stop() {
+
+        eventTimer.cancel();
+        telemetryTimer.cancel();
+
         //TODO Implement a proper stop ... :) BLOCCARE I TIMER
     }
 
