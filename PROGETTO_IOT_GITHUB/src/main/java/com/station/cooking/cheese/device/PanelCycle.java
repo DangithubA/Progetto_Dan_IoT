@@ -179,7 +179,7 @@ public class PanelCycle {
 
                         //SCATTA L'ALLARME E LO INVIA FINCHE' LA TEMPERATURA NON SI RISTABILIZZA, IL RESTO NON VA AVANTI
 
-                        panelMqttSmartObject.publishAlarmEvent(String.format("%s/event", panelMqttSmartObject.getBaseTopic()), "TEMPERATURE_ALARM");
+                        panelMqttSmartObject.publishAlarmEvent(String.format("%s/event", panelMqttSmartObject.getBaseTopic()), "TEMPERATURE_ALARM_P01");
                         Thread.sleep(900);
 
                     } else {
