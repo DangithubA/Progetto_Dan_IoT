@@ -1,6 +1,8 @@
 package com.station.cooking.cheese.utils;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 /**
  +---------------+------+---------+
  |         SenML | JSON | Type    |
@@ -21,7 +23,7 @@ package com.station.cooking.cheese.utils;
  |   Update Time | ut   | Number  |
  +---------------+------+---------+
  */
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SenMLRecord {
 
 	private String bn;

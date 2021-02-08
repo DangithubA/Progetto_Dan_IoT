@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.google.gson.Gson;
 import com.station.cooking.cheese.message.EventMessage;
 import com.station.cooking.cheese.message.TelemetryMessage;
 import com.station.cooking.cheese.model.PanelDescriptor;
@@ -255,7 +256,6 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
         eventTimer.cancel();
         telemetryTimer.cancel();
 
-        //TODO Implement a proper stop ... :) BLOCCARE I TIMER
     }
 
     //private void publishTelemetryData(String topic, TelemetryMessage telemetryMessage) throws MqttException, JsonProcessingException { // prende topic dove pubblicare
@@ -309,6 +309,13 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
         if (mqttClient.isConnected() && smartObjectResource.getJsonSenmlResponse().toString() != null && topic != null) {
 
             //String msgString = this.objectMapper.writeValueAsString(telemetryMessage);
+
+            /*String messaggio = smartObjectResource.getJsonSenmlResponse().toString();
+
+            Gson gson = new Gson();
+
+            messaggio = gson.toJson(messaggio);
+            messaggio.*/
 
             MqttMessage msg = new MqttMessage(smartObjectResource.getJsonSenmlResponse().toString().getBytes());
             //Set com.station.cooking.cheese.message QoS
