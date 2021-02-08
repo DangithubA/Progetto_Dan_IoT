@@ -211,24 +211,18 @@ public class MqttSmartObjectProcess {
         newThread02.start();
 
         System.out.println("Stampa elenco aggiornato HashMap della lista pannelli attivi dopo la creazione e attivazione di P02");
-        //System.out.println(panelsList);
+        PanelCycle panelCycle02 = new PanelCycle(panelMqttSmartObject02);
 
+        Thread newThread04 = new Thread(() -> {
+            try {
+                panelCycle02.panelCycleRun();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-            PanelCycle panelCycle02 = new PanelCycle(panelMqttSmartObject02);
-
-            Thread newThread04 = new Thread(() -> {
-                try {
-                    panelCycle02.panelCycleRun();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            });
-            Thread.sleep(2000);
-            newThread04.start();
-
-
-
+        });
+        Thread.sleep(2000);
+        newThread04.start();
         // serializePanelsList();
 
 

@@ -72,30 +72,10 @@ public class JsonConsumer {
             //passing through the broker
             subscriber.subscribe("#", (topic, msg) -> {
 
-                logger.info("Ho ricevuto un messaggio");
+                logger.info("Ho ricevuto un messaggio dalla topic {}", topic);
 
-                //The topic variable contain the specific topic associated to the received message. Using MQTT wildcards
-                //messaged from multiple and different topic can be received with the same subscription
-                //The msg variable is a MqttMessage object containing all the information about the received message
-            	byte[] payload = msg.getPayload();
+                logger.info("MESSAGGIO: {}", msg);
 
-
-                String contenuto = objectMapper.readValue(payload, String.class);
-                logger.info("MESSAGGIO: {}", contenuto);
-
-
-            	/*//Through the internal method parseJsonMessage() de-serialize the received Message Descriptor
-                MessageDescriptor msgDescriptor = parseJsonMessage(payload);
-
-                //Check and print the received Message
-                if(msgDescriptor != null)
-                	logger.info("JSON MessageDescriptor Received ({}) Data -> Timestamp: {}, Type: {}, Value: {}", 
-                			topic, 
-                			msgDescriptor.getTimestamp(), 
-                			msgDescriptor.getType(), 
-                			msgDescriptor.getValue());
-                else
-                	logger.info("Message Received ({}) Message Received: {}", topic, new String(payload));*/
 
             });
 
@@ -105,22 +85,4 @@ public class JsonConsumer {
 
     }
 
-    /**
-     * Parse the received MQTT message into a MessageDescriptor object or null in case of error
-     *
-     * @param payload
-     * @return the parsed MessageDescriptor object or null in case or error.
-     */
-    /*public static MessageDescriptor parseJsonMessage(byte[] payload) {
-    	
-    	try {
-    		
-    		Gson gson = new Gson();
-    		return (MessageDescriptor)gson.fromJson(new String(payload), MessageDescriptor.class);
-    		
-    	}catch(Exception e) {
-    		return null;
-    	}
-    	
-    }*/
 }

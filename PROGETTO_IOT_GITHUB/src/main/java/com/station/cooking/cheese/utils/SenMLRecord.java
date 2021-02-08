@@ -32,6 +32,10 @@ public class SenMLRecord {
 
 	private Number t;
 
+	private Number bver;
+
+	private String vs;
+
 	public SenMLRecord() {
 	}
 
@@ -40,6 +44,8 @@ public class SenMLRecord {
 		this.u = u;
 		this.v = v;
 		this.t = t;
+		this.bver = bver;
+		this.vs = vs;
 	}
 
 	public String getBn() {
@@ -48,6 +54,14 @@ public class SenMLRecord {
 
 	public void setBn(String bn) {
 		this.bn = bn;
+	}
+
+	public Number getBver() {
+		return bver;
+	}
+
+	public void setBver(Number bver) {
+		this.bver = bver;
 	}
 
 	public String getU() {
@@ -72,6 +86,14 @@ public class SenMLRecord {
 
 	public void setT(Number t) {
 		this.t = t;
+	}
+
+	public String getVs() {
+		return vs;
+	}
+
+	public void setVs(String vs) {
+		this.vs = vs;
 	}
 
 	@Override

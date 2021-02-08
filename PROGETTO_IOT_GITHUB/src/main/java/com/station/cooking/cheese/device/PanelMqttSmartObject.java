@@ -14,6 +14,8 @@ import com.station.cooking.cheese.resource.MotorMixerResource;
 import com.station.cooking.cheese.resource.ValveResource;
 import com.station.cooking.cheese.resource.TemperatureSensorResource;
 
+import com.station.cooking.cheese.utils.SenMLPack;
+import com.station.cooking.cheese.utils.SenMLRecord;
 import jdk.internal.org.objectweb.asm.TypeReference;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -24,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
@@ -54,6 +57,8 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
     private HashMap<String, SmartObjectResource<?>> resourceMap;
 
     private static final String HEARTBEAT_EVENT_TYPE = "HEARTBEAT_EVENT";
+
+    private static final String INFO_HEARTBEAT_EVENT_TYPE = "INFO_HEARTBEAT_EVENT";
 
     private String baseTopic;
 
@@ -189,6 +194,8 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
                 eventMessage.setTimestamp(System.currentTimeMillis());
                 eventMessage.setMetadata(new HashMap<String, Object>(){
                     {
+                        put("panel_id", deviceId);
+                        put("software_version:", "0.0.1");
                         put("status", "OK");
                         put("resource_number", resourceMap.entrySet().size());
                         put("connection_type", "GOOD");
@@ -241,6 +248,47 @@ public class PanelMqttSmartObject implements IMqttSmartObjectDevice{ // implemen
 
     //private void publishTelemetryData(String topic, TelemetryMessage telemetryMessage) throws MqttException, JsonProcessingException { // prende topic dove pubblicare
 
+
+    /*public void publishAlarmEvent(String topic, String eventString) throws MqttException, JsonProcessingException{
+        logger.info("Publishing EVENT-ALARM to Topic: {}", topic);     // per configurare i messaggi vedi telemetryMessagge
+
+        //if (mqttClient.isConnected() && telemetryMessage != null && topic != null) {
+        if (mqttClient.isConnected() && topic != null) {
+
+            //String msgString = this.objectMapper.writeValueAsString(telemetryMessage);
+
+            ObjectMapper mapper = new ObjectMapper();
+
+            try {
+
+                SenMLPack senMLPack = new SenMLPack();
+
+                SenMLRecord senMLRecord = new SenMLRecord();
+                senMLRecord.setVs(eventString);
+                senMLRecord.setT(System.currentTimeMillis());
+                senMLPack.add(senMLRecord);
+
+                //return Optional.of(this.objectMapper.writeValueAsString(senMLPack));
+                MqttMessage msg = new MqttMessage(Optional.of(mapper.writeValueAsString(senMLPack)).toString().getBytes());
+
+                msg.setQos(this.smartObjectConfiguration.getMqttOutgoingClientQoS());
+
+                mqttClient.publish(topic, msg);
+
+                this.messageCount++;
+
+                logger.info("Data Correctly Published to topic: {}", topic);
+
+
+            } catch (Exception e) {
+                logger.info("Data Not Published to topic: SERVER ERROR");
+            }
+        }
+        else{
+            logger.error("Error: Topic or Msg = Null or MQTT Client is not Connected !");
+        }
+
+    }*/
                                                                                                 // oggetto telemetrymessagge non di mqtt ma definito e strutturato per
     private void publishTelemetryData(String topic, SmartObjectResource smartObjectResource) throws MqttException, JsonProcessingException {
         //logger.info("Publishing to Topic: {} Smart Object: {}", topic, telemetryMessage);

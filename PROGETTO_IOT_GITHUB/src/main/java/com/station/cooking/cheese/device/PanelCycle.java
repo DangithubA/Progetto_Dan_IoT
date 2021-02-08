@@ -34,11 +34,11 @@ public class PanelCycle {
 
     private static ObjectMapper objectMapper = new ObjectMapper();
 
-    private static ArrayList<String> phases = new ArrayList<>();
+    private ArrayList<String> phases = new ArrayList<>();
 
-    private static ArrayList<Double> temperatures = new ArrayList<>();
+    private ArrayList<Double> temperatures = new ArrayList<>();
 
-    private static ArrayList<Double> times = new ArrayList<>();
+    private ArrayList<Double> times = new ArrayList<>();
 
     //public Set<Double> Temperatures;
 
@@ -55,6 +55,8 @@ public class PanelCycle {
         this.phases = panelMqttSmartObject.getRecipe().getPhases();
         this.temperatures = panelMqttSmartObject.getRecipe().getTemperatures();
         this.times = panelMqttSmartObject.getRecipe().getTimes();
+
+        System.out.println(String.format("Tempretaure %s , %s", panelMqttSmartObject.getDeviceId(), temperatures));
 
 
 
