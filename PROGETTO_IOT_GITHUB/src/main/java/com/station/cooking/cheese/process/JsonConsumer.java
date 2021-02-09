@@ -71,7 +71,7 @@ public class JsonConsumer {
 
             //Subscribe to the target topic #. In that case the consumer will receive (if authorized) all the message
             //passing through the broker
-            subscriber.subscribe("#", (topic, msg) -> {
+            subscriber.subscribe("#", (topic, msg) -> {  // iot/com.station.cooking.cheese.device/+/Temperature
 
                 logger.info("Ho ricevuto un messaggio dalla topic {}", topic);
 

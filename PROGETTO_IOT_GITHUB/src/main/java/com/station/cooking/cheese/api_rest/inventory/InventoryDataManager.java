@@ -130,6 +130,7 @@ public class InventoryDataManager implements IInventoryData{
         recipeDescriptor.setTemperatures(temps);
         recipeDescriptor.setName("null");
         panelsList.get(panel_id).setRecipe(recipeDescriptor);
+        serializeToFile();
 
     }
 
